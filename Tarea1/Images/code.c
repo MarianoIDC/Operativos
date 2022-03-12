@@ -2,6 +2,9 @@
 //https://github.com/nothings/stb
 //https://solarianprogrammer.com/2019/06/10/c-programming-reading-writing-images-stb_image-libraries/
 
+// How to RUN
+// gcc -std=c17 -Wall code.c -o code -lm
+// ./code
 
 #include <stdio.h>
 #include <stdlib.h> 
@@ -22,9 +25,7 @@ int main(void) {
     int compare= cmp_size_of_image(imageName, pixel);
     printf("Exist %d px after the pixel %d px\n", compare, pixel);
 }
-//gcc -std=c17 -Wall code.c -o code -lm
-//./code
-//char *s  = "geeksquiz";
+
 void load_file(char *imageName){
     int width, height, channels;
     unsigned char *img = stbi_load(imageName, &width, &height, &channels, 0);
@@ -51,15 +52,7 @@ int size_of_image(char *imageName){
 //este modulo retornara la cantidad de pixeles en la imagen que son mayores a al parametro
 //recibido.
 int cmp_size_of_image(char *imageName, int pixel){
-    int width, height, channels;
-    unsigned char *img = stbi_load(imageName, &width, &height, &channels, 0);
-    if(img == NULL) {
-        printf("Error in loading the image\n");
-        exit(1);
-    }
-    int size= width*height;
-
-    printf("The size of image is: %d px\n", size);
+    int size= size_of_image(imageName);
     if(pixel>size){
         return 0;
     }
