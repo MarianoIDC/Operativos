@@ -10,10 +10,17 @@
 
 void load_file(char *imageName);
 int size_of_image(char *imageName);
+int cmp_size_of_image(char *imageName, int pixel);
+
+
 int main(void) {
     char *imageName="sunset_940_530.jpg";
     load_file(imageName);
     int size= size_of_image(imageName);
+    printf("The size of image is: %d px\n", size);
+    int pixel=500;
+    int compare= cmp_size_of_image(imageName, pixel);
+    printf("Exist %d px after the pixel %d px\n", compare, pixel);
 }
 //gcc -std=c17 -Wall code.c -o code -lm
 //./code
@@ -36,6 +43,25 @@ int size_of_image(char *imageName){
         exit(1);
     }
     int size= width*height;
-    printf("The size of image is: %d px\n", size);
+    
     return size;
+}
+
+// Funcion recibir las imagenes de manera secuencial y un parametro (valor de pixel),
+//este modulo retornara la cantidad de pixeles en la imagen que son mayores a al parametro
+//recibido.
+int cmp_size_of_image(char *imageName, int pixel){
+    int width, height, channels;
+    unsigned char *img = stbi_load(imageName, &width, &height, &channels, 0);
+    if(img == NULL) {
+        printf("Error in loading the image\n");
+        exit(1);
+    }
+    int size= width*height;
+
+    printf("The size of image is: %d px\n", size);
+    if(pixel>size){
+        return 0;
+    }
+    return size-pixel;
 }
