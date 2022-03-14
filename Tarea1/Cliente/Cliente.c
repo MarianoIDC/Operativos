@@ -10,7 +10,6 @@
 #define PORT 8080
 #define SA struct sockaddr
 #define SIZE 1024
-
 void send_file(int sockfd){
 	FILE *fp;
 	char *filename = "Archivo.txt";
@@ -35,7 +34,7 @@ void send_file(int sockfd){
 
 int main(int argc, char **argv)
 {
-	char *ip = "172.27.92.106";
+	char *ip = "192.168.100.6";
   	int port = 8080;
 
 	int sockfd, connfd;
