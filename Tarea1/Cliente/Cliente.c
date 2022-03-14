@@ -35,7 +35,7 @@ void send_file(int sockfd){
 
 int main(int argc, char **argv)
 {
-	char *ip = "192.168.0.22";
+	char *ip = "172.27.92.106";
   	int port = 8080;
 
 	int sockfd, connfd;

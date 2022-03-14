@@ -12,7 +12,9 @@ RUN yum install gcc -y
 
 RUN mkdir -p ./home/Cliente \
     && chmod 775 ./home/Cliente -R 
-    
+
 COPY . /home/Cliente/
 
 WORKDIR /home/Cliente
+
+RUN gcc Cliente.c -o Cliente
