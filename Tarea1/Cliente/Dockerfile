@@ -7,5 +7,12 @@ RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|
 
 RUN yum update -y
 
-WORKDIR /home/
+
 RUN yum install gcc -y
+
+RUN mkdir -p ./home/Cliente \
+    && chmod 775 ./home/Cliente -R 
+    
+COPY . /home/Cliente/
+
+WORKDIR /home/Cliente
