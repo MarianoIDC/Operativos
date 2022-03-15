@@ -46,7 +46,7 @@ int main(){
   }
  printf("[+]Connected to Server.\n");
  
-  fp = fopen(filename, "r");
+  fp = fopen(filename);
   if (fp == NULL) {
     perror("[-]Error in reading file.");
     exit(1);
