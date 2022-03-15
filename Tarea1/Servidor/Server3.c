@@ -24,17 +24,17 @@ void write_file(int sockfd){
 //Read Picture Size
     printf("Reading Picture Size\n");
     int size;
-    fread(sockfd, &size, sizeof(int));
+    read(sockfd, &size, sizeof(int));
 
     //Read Picture Byte Array
     printf("Reading Picture Byte Array\n");
     char p_array[size];
-    fread(sockfd, p_array, size);
+    read(sockfd, p_array, size);
 
     //Convert it Back into Picture
     printf("Converting Byte Array to Picture\n");
     FILE *image;
-    image = fopen("c1.jpg", "w");
+    image = fopen("c1.png", "w");
     fwrite(p_array, 1, sizeof(p_array), image);
     fclose(image);
 }

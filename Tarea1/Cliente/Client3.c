@@ -16,13 +16,13 @@ void send_file(FILE *fp, int sockfd){
 
     //Send Picture Size
     printf("Sending Picture Size\n");
-    fwrite(sockfd, &size, sizeof(size));
+    write(sockfd, &size, sizeof(size));
 
     printf("Sending Picture as Byte Array\n");
         char send_buffer[size];
         while(!feof(fp)) {
             fread(send_buffer, 1, sizeof(send_buffer), fp);
-            fwrite(sockfd, send_buffer, sizeof(send_buffer));
+            write(sockfd, send_buffer, sizeof(send_buffer));
             bzero(send_buffer, sizeof(send_buffer));
         }
 //   int n;
@@ -45,7 +45,7 @@ int main(){
   int sockfd;
   struct sockaddr_in server_addr;
   FILE *fp;
-  char *filename = "send2.jpg";
+  char *filename = "send2.png";
  
   sockfd = socket(AF_INET, SOCK_STREAM, 0);
   if(sockfd < 0) {
