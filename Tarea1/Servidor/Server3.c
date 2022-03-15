@@ -24,12 +24,12 @@ void write_file(int sockfd){
 //Read Picture Size
     printf("Reading Picture Size\n");
     int size;
-    read(sockfd, &size, sizeof(int));
+    fread(sockfd, &size, sizeof(int));
 
     //Read Picture Byte Array
     printf("Reading Picture Byte Array\n");
     char p_array[size];
-    read(sockfd, p_array, size);
+    fread(sockfd, p_array, size);
 
     //Convert it Back into Picture
     printf("Converting Byte Array to Picture\n");
