@@ -13,6 +13,7 @@
 #define MAX 80
 #define PORT 1717
 #define SA struct sockaddr
+#define SIZE 1024
    
 // Function designed for chat between client and server.
 void func(int connfd)
@@ -43,12 +44,33 @@ void func(int connfd)
         }
     }
 }
-   
+
+void write_file(int sockfd){
+  int n;
+  FILE *fp;
+  char *filename = "recv.txt";
+  char buffer[SIZE];
+ 
+  fp = fopen(filename, "w");
+  while (1) {
+    n = recv(sockfd, buffer, SIZE, 0);
+    if (n <= 0){
+      break;
+      return;
+    }
+    fprintf(fp, "%s", buffer);
+    bzero(buffer, SIZE);
+  }
+  return;
+}
+
 // Driver function
 int main()
 {
-    int sockfd, connfd, len;
-    struct sockaddr_in servaddr, cli;
+    int sockfd, connfd, len, new_sock;
+    struct sockaddr_in servaddr, cli, new_addr;
+    socklen_t addr_size;
+    char buffer[SIZE];
    
     // socket create and verification
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -92,8 +114,13 @@ int main()
         printf("server accept the client...\n");
    
     // Function for chatting between client and server
-    func(connfd);
+    //func(connfd);
    
+    addr_size = sizeof(new_addr);
+    new_sock = accept(sockfd, (struct sockaddr*)&new_addr, &addr_size);
+    write_file(new_sock);
+    printf("[+]Data written in the file successfully.\n");
+
     // After chatting close the socket
     close(sockfd);
 }

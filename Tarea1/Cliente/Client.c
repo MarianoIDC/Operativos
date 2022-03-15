@@ -6,6 +6,21 @@
 #define MAX 80
 #define PORT 1717
 #define SA struct sockaddr
+#define SIZE 1024
+
+void send_file(FILE *fp, int sockfd){
+  int n;
+  char data[SIZE] = {0};
+ 
+  while(fgets(data, SIZE, fp) != NULL) {
+    if (send(sockfd, data, sizeof(data), 0) == -1) {
+      perror("[-]Error in sending file.");
+      exit(1);
+    }
+    bzero(data, SIZE);
+  }
+}
+
 void func(int sockfd)
 {
     char buff[MAX];
@@ -31,15 +46,17 @@ int main()
 {
     int sockfd, connfd;
     struct sockaddr_in servaddr, cli;
+	FILE *fp;
+  	char *filename = "send.txt";
    
     // socket create and verification
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd == -1) {
-        printf("socket creation failed...\n");
+        printf("[-]Socket creation failed...\n");
         exit(0);
     }
     else
-        printf("Socket successfully created..\n");
+        printf("[+]Socket successfully created..\n");
     bzero(&servaddr, sizeof(servaddr));
    
     // assign IP, PORT
@@ -49,15 +66,25 @@ int main()
    
     // connect the client socket to server socket
     if (connect(sockfd, (SA*)&servaddr, sizeof(servaddr)) != 0) {
-        printf("connection with the server failed...\n");
+        printf("[-]Connection with the server failed...\n");
         exit(0);
     }
     else
-        printf("connected to the server..\n");
+        printf("[+]connected to the server..\n");
    
     // function for chat
-    func(sockfd);
+	//func(sockfd);
+
+	fp = fopen(filename, "r");
+  	if (fp == NULL) {
+    	perror("[-]Error in reading file.");
+    	exit(1);
+  	}
+ 
+  	send_file(fp, sockfd);
+  	printf("[+]File data sent successfully.\n");
    
     // close the socket
+	printf("[+]Closing the connection.\n");
     close(sockfd);
 }
