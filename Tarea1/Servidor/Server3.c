@@ -7,7 +7,7 @@
 void write_file(int sockfd){
   int n;
   FILE *fp;
-  char *filename = "recv.txt";
+  char *filename = "recv.png";
   char buffer[SIZE];
  
   fp = fopen(filename, "w");
