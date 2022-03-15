@@ -2,7 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <arpa/inet.h>
+
+#include <stdio.h>
+#include <stdlib.h> 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image/stb_image.h"
+
 #define SIZE 1024
+
+
+int size_of_image(char *imageName);
+int cmp_size_of_image(char *imageName, int pixel);
+
+
  
 void write_file(int sockfd){
   int n;
@@ -66,4 +78,28 @@ int main(){
   printf("[+]Data written in the file successfully.\n");
  
   return 0;
+}
+
+// Funcion para conocer el tama;o de la imagen
+int size_of_image(char *imageName){
+    int width, height, channels;
+    unsigned char *img = stbi_load(imageName, &width, &height, &channels, 0);
+    if(img == NULL) {
+        printf("Error in loading the image\n");
+        exit(1);
+    }
+    int size= width*height;
+    
+    return size;
+}
+
+// Funcion recibir las imagenes de manera secuencial y un parametro (valor de pixel),
+//este modulo retornara la cantidad de pixeles en la imagen que son mayores a al parametro
+//recibido.
+int cmp_size_of_image(char *imageName, int pixel){
+    int size= size_of_image(imageName);
+    if(pixel>size){
+        return 0;
+    }
+    return size-pixel;
 }
