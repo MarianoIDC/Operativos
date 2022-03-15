@@ -3,7 +3,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #define SIZE 1024
- 
+#define BUFSIZE 1024
 void write_file(int sockfd){
 //   int n;
 //   FILE *fp;
@@ -26,16 +26,27 @@ void write_file(int sockfd){
     int size;
     read(sockfd, &size, sizeof(int));
 
-    //Read Picture Byte Array
-    printf("Reading Picture Byte Array\n");
-    char p_array[size];
-    read(sockfd, p_array, size);
+    // //Read Picture Byte Array
+    // printf("Reading Picture Byte Array\n");
+    // char p_array[size];
+    // read(sockfd, p_array, size);
 
-    //Convert it Back into Picture
-    printf("Converting Byte Array to Picture\n");
-    FILE *image;
-    image = fopen("c1.png", "w");
-    fwrite(p_array, 1, sizeof(p_array), image);
+    // //Convert it Back into Picture
+    // printf("Converting Byte Array to Picture\n");
+    // FILE *image;
+    // image = fopen("c1.png", "w");
+    // fwrite(p_array, 1, sizeof(p_array), image);
+    // fclose(image);
+
+    //Read Picture Byte Array and Copy in file
+    printf("Reading Picture Byte Array\n");
+    char p_array[BUFSIZE];
+    FILE *image = fopen("c1.png", "w");
+    int nb = read(sockfd, p_array, BUFSIZE);
+    while (nb > 0) {
+        fwrite(p_array, 1, nb, image);
+        nb = read(sockfd, p_array, BUFSIZE);
+    }
     fclose(image);
 }
  

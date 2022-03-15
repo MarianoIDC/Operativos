@@ -4,12 +4,10 @@
 #include <string.h>
 #include <arpa/inet.h>
 #define SIZE 1024
+#define BUFSIZE 1024
  
 void send_file(FILE *fp, int sockfd){
     int size;
-    // fseek(fp, 0, SEEK_END)
-    // size = ftell(fp)
-
     fseek(fp, 0, SEEK_END);
     size = ftell(fp);
     fseek(fp, 0, SEEK_SET);
@@ -18,23 +16,24 @@ void send_file(FILE *fp, int sockfd){
     printf("Sending Picture Size\n");
     write(sockfd, &size, sizeof(size));
 
+    // printf("Sending Picture as Byte Array\n");
+    //     char send_buffer[size];
+    //     while(!feof(fp)) {
+    //         fread(send_buffer, 1, sizeof(send_buffer), fp);
+    //         write(sockfd, send_buffer, sizeof(send_buffer));
+    //         bzero(send_buffer, sizeof(send_buffer));
+    //     }
+
+    //Send Picture as Byte Array (without need of a buffer as large as the image file)
     printf("Sending Picture as Byte Array\n");
-        char send_buffer[size];
-        while(!feof(fp)) {
-            fread(send_buffer, 1, sizeof(send_buffer), fp);
-            write(sockfd, send_buffer, sizeof(send_buffer));
-            bzero(send_buffer, sizeof(send_buffer));
-        }
-//   int n;
-//   char data[SIZE] = {0};
- 
-//   while(fgets(data, SIZE, fp) != NULL) {
-//     if (send(sockfd, data, sizeof(data), 0) == -1) {
-//       perror("[-]Error in sending file.");
-//       exit(1);
-//     }
-//     bzero(data, SIZE);
-//   }
+    char send_buffer[BUFSIZE]; // no link between BUFSIZE and the file size
+    int nb = fread(send_buffer, 1, sizeof(send_buffer), picture);
+    while(!feof(picture)) {
+    write(sock, send_buffer, nb);
+    nb = fread(send_buffer, 1, sizeof(send_buffer), picture);
+    // no need to bzero
+    }
+
 }
  
 int main(){
