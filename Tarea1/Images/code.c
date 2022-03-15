@@ -58,3 +58,5 @@ int cmp_size_of_image(char *imageName, int pixel){
     }
     return size-pixel;
 }
+
+
