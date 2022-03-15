@@ -5,13 +5,13 @@
 #define SIZE 1024
  
 void write_file(int sockfd){
-  int n;
-  FILE *fp;
-  char *filename = "recv.txt";
-  char buffer[SIZE];
+    int n;
+    FILE *fp;
+    char *filename = "recv.txt";
+    char buffer[SIZE];
 
-  n = recv(sockfd, buffer, SIZE, 0);
- 
+    n = recv(sockfd, buffer, SIZE, 0);
+    bzero(buffer, SIZE);
 //   fp = fopen(filename, "w");
 //   while (1) {
 //     n = recv(sockfd, buffer, SIZE, 0);
@@ -22,7 +22,7 @@ void write_file(int sockfd){
 //     fprintf(fp, "%s", buffer);
 //     bzero(buffer, SIZE);
 //   }
-  return;
+    return;
 }
  
 int main(){
