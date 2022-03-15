@@ -16,14 +16,6 @@ void send_file(FILE *fp, int sockfd){
     printf("Sending Picture Size\n");
     write(sockfd, &size, sizeof(size));
 
-    // printf("Sending Picture as Byte Array\n");
-    //     char send_buffer[size];
-    //     while(!feof(fp)) {
-    //         fread(send_buffer, 1, sizeof(send_buffer), fp);
-    //         write(sockfd, send_buffer, sizeof(send_buffer));
-    //         bzero(send_buffer, sizeof(send_buffer));
-    //     }
-
     //Send Picture as Byte Array (without need of a buffer as large as the image file)
     printf("Sending Picture as Byte Array\n");
     char send_buffer[BUFSIZE]; // no link between BUFSIZE and the file size
