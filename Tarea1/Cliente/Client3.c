@@ -4,7 +4,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #define SIZE 1024
-#define BUFSIZE 1024
+#define BUFSIZE 1080
  
 void send_file(FILE *fp, int sockfd){
     int size;
@@ -27,10 +27,10 @@ void send_file(FILE *fp, int sockfd){
     //Send Picture as Byte Array (without need of a buffer as large as the image file)
     printf("Sending Picture as Byte Array\n");
     char send_buffer[BUFSIZE]; // no link between BUFSIZE and the file size
-    int nb = fread(send_buffer, 1, sizeof(send_buffer), picture);
-    while(!feof(picture)) {
-    write(sock, send_buffer, nb);
-    nb = fread(send_buffer, 1, sizeof(send_buffer), picture);
+    int nb = fread(send_buffer, 1, sizeof(send_buffer), fp);
+    while(!feof(fp)) {
+    write(sockfd, send_buffer, nb);
+    nb = fread(send_buffer, 1, sizeof(send_buffer), fp);
     // no need to bzero
     }
 

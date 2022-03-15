@@ -3,7 +3,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #define SIZE 1024
-#define BUFSIZE 1024
+#define BUFSIZE 1080
 void write_file(int sockfd){
 //   int n;
 //   FILE *fp;
