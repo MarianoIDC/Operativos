@@ -6,16 +6,35 @@
 #define SIZE 1024
  
 void send_file(FILE *fp, int sockfd){
-  int n;
-  char data[SIZE] = {0};
+    int size;
+    // fseek(fp, 0, SEEK_END)
+    // size = ftell(fp)
+
+    fseek(fp, 0, SEEK_END);
+    size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    //Send Picture Size
+    printf("Sending Picture Size\n");
+    write(sockfd, &size, sizeof(size));
+
+    printf("Sending Picture as Byte Array\n");
+        char send_buffer[size];
+        while(!feof(fp)) {
+            fread(send_buffer, 1, sizeof(send_buffer), fp);
+            write(sockfd, send_buffer, sizeof(send_buffer));
+            bzero(send_buffer, sizeof(send_buffer));
+        }
+//   int n;
+//   char data[SIZE] = {0};
  
-  while(fgets(data, SIZE, fp) != NULL) {
-    if (send(sockfd, data, sizeof(data), 0) == -1) {
-      perror("[-]Error in sending file.");
-      exit(1);
-    }
-    bzero(data, SIZE);
-  }
+//   while(fgets(data, SIZE, fp) != NULL) {
+//     if (send(sockfd, data, sizeof(data), 0) == -1) {
+//       perror("[-]Error in sending file.");
+//       exit(1);
+//     }
+//     bzero(data, SIZE);
+//   }
 }
  
 int main(){

@@ -5,22 +5,38 @@
 #define SIZE 1024
  
 void write_file(int sockfd){
-  int n;
-  FILE *fp;
-  char *filename = "recv.png";
-  char buffer[SIZE];
+//   int n;
+//   FILE *fp;
+//   char *filename = "recv.png";
+//   char buffer[SIZE];
  
-  fp = fopen(filename, "w");
-  while (1) {
-    n = recv(sockfd, buffer, SIZE, 0);
-    if (n <= 0){
-      break;
-      return;
-    }
-    fprintf(fp, "%s", buffer);
-    bzero(buffer, SIZE);
-  }
-  return;
+//   fp = fopen(filename, "w");
+//   while (1) {
+//     n = recv(sockfd, buffer, SIZE, 0);
+//     if (n <= 0){
+//       break;
+//       return;
+//     }
+//     fprintf(fp, "%s", buffer);
+//     bzero(buffer, SIZE);
+//   }
+//   return;
+//Read Picture Size
+    printf("Reading Picture Size\n");
+    int size;
+    read(sockfd, &size, sizeof(int));
+
+    //Read Picture Byte Array
+    printf("Reading Picture Byte Array\n");
+    char p_array[size];
+    read(sockfd, p_array, size);
+
+    //Convert it Back into Picture
+    printf("Converting Byte Array to Picture\n");
+    FILE *image;
+    image = fopen("c1.png", "w");
+    fwrite(p_array, 1, sizeof(p_array), image);
+    fclose(image);
 }
  
 int main(){
