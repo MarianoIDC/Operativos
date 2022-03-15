@@ -34,7 +34,7 @@ void write_file(int sockfd){
     //Convert it Back into Picture
     printf("Converting Byte Array to Picture\n");
     FILE *image;
-    image = fopen("c1.png", "w");
+    image = fopen("c1.jpg", "w");
     fwrite(p_array, 1, sizeof(p_array), image);
     fclose(image);
 }
