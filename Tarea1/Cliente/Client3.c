@@ -13,11 +13,11 @@ void send_file(FILE *fp, int sockfd){
     fseek(fp, 0, SEEK_SET);
 
     //Send Picture Size
-    printf("Sending Picture Size\n");
+    printf("[+]Sending Picture Size\n");
     write(sockfd, &size, sizeof(size));
 
     //Send Picture as Byte Array (without need of a buffer as large as the image file)
-    printf("Sending Picture as Byte Array\n");
+    printf("[+]Sending Picture as Byte Array\n");
     char send_buffer[BUFSIZE]; // no link between BUFSIZE and the file size
     int nb = fread(send_buffer, 1, sizeof(send_buffer), fp);
     while(!feof(fp)) {

@@ -8,12 +8,12 @@
 void write_file(int sockfd){
 
     //Read Picture Size
-    printf("Reading Picture Size\n");
+    printf("[+]Reading Picture Size\n");
     int size;
     read(sockfd, &size, sizeof(int));
 
     //Read Picture Byte Array and Copy in file
-    printf("Reading Picture Byte Array\n");
+    printf("[+]Reading Picture Byte Array\n");
     char p_array[BUFSIZE];
     FILE *image = fopen("c1.png", "w");
     int nb = read(sockfd, p_array, BUFSIZE);
