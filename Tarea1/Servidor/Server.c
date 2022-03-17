@@ -6,7 +6,7 @@
 #include <arpa/inet.h>
 #include "stb_image/stb_image.h"
 #define SIZE 1024
-#define BUFSIZE 3500
+#define BUFSIZE 7800
 
 
 int size_of_image(char *imageName);
@@ -27,17 +27,20 @@ void write_file(int sockfd){
     //Read Picture Byte Array and Copy in file
     printf("[+]Reading Picture Byte Array\n");
     char p_array[BUFSIZE];
-    FILE *image = fopen("c1.png", "w");
+    FILE *image = fopen("server.txt", "w");
     int nb = read(sockfd, p_array, BUFSIZE);
     while (nb > 0) {
         fwrite(p_array, 1, nb, image);
         nb = read(sockfd, p_array, BUFSIZE);
     }
     fclose(image);
+
     
-    int compare= cmp_size_of_image("c1.png",pixels);
-    printf("[+]Exist %d px after the pixel %d px\n", compare, pixels);
+    //system("./decodebase64.sh decoded.png");
+    //int compare= cmp_size_of_image("decoded.png",pixels);
+    //printf("[+]Exist %d px after the pixel %d px\n", compare, pixels);
 }
+
  
 int main(){
   char *ip = "192.168.100.9";

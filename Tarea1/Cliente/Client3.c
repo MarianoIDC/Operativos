@@ -36,7 +36,7 @@ int main(){
   int sockfd;
   struct sockaddr_in server_addr;
   FILE *fp;
-  char *filename = "send2.png";
+  char *filename = "base64.txt";
  
   sockfd = socket(AF_INET, SOCK_STREAM, 0);
   if(sockfd < 0) {

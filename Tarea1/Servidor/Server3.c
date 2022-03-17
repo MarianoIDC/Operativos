@@ -15,7 +15,7 @@ void write_file(int sockfd){
     //Read Picture Byte Array and Copy in file
     printf("[+]Reading Picture Byte Array\n");
     char p_array[BUFSIZE];
-    FILE *image = fopen("c1.png", "w");
+    FILE *image = fopen("c1.txt", "w");
     int nb = read(sockfd, p_array, BUFSIZE);
     while (nb > 0) {
         fwrite(p_array, 1, nb, image);
