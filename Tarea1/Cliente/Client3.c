@@ -30,7 +30,7 @@ void send_file(FILE *fp, int sockfd){
  
 int main(){
   char *ip = "172.21.156.119";
-  int port = 1717;
+  int port = 2020;
   int e;
  
   int sockfd;
