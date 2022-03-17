@@ -84,8 +84,8 @@ int main(){
     exit(1);
   }
  
-  // send_file(fp, sockfd);
-  func(sockfd);
+  send_file(fp, sockfd);
+  // func(sockfd);
   printf("[+]File data sent successfully.\n");
  
   printf("[+]Closing the connection.\n");
