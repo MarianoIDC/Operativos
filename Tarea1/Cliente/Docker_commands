@@ -1,0 +1,7 @@
+cd 'D:\Users\Mariano\OneDrive\Ingenieria en Computadores\2022\Semestre I\Operativos\Operativos\Tarea1\Cliente\'; 
+sudo docker stop cliente; 
+sudo docker rm cliente; 
+sudo docker rmi centos:cliente; 
+sudo docker build -t centos:cliente .; 
+sudo docker run -d -v /home/Cliente:/Cliente --name cliente centos:cliente tail -f /dev/null; 
+sudo docker exec -it cliente /bin/bash

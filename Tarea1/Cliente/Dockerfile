@@ -17,4 +17,4 @@ COPY . /home/Cliente/
 
 WORKDIR /home/Cliente
 
-RUN gcc Client3.c -o Client3
+RUN gcc Client.c -o Client

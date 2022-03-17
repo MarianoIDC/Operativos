@@ -1,90 +1,100 @@
-#include <netdb.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
-#include <sys/socket.h>
-#define MAX 80
-#define PORT 1717
-#define SA struct sockaddr
+#include <arpa/inet.h>
 #define SIZE 1024
+#define BUFSIZE 3500
+
+
+void send_image(FILE *fp, int sockfd, int pixels){
+    int size;
+    fseek(fp, 0, SEEK_END);
+    size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    //Send Pixels of image
+    printf("[+]Sending Pixels\n");
+    write(sockfd, &pixels, sizeof(int));
+
+    //Send Picture Size
+    printf("[+]Sending Picture Size\n");
+    write(sockfd, &size, sizeof(size));
+
+    //Send Picture as Byte Array (without need of a buffer as large as the image file)
+    printf("[+]Sending Picture as Byte Array\n");
+    char send_buffer[BUFSIZE]; // no link between BUFSIZE and the file size
+    int nb = fread(send_buffer, 1, sizeof(send_buffer), fp);
+    while(!feof(fp)) {
+    write(sockfd, send_buffer, nb);
+    nb = fread(send_buffer, 1, sizeof(send_buffer), fp);
+    // no need to bzero
+    }
+
+}
+
 
 void send_file(FILE *fp, int sockfd){
-  int n;
-  char data[SIZE] = {0};
- 
-  while(fgets(data, SIZE, fp) != NULL) {
-    if (send(sockfd, data, sizeof(data), 0) == -1) {
-      perror("[-]Error in sending file.");
-      exit(1);
+    int size;
+    fseek(fp, 0, SEEK_END);
+    size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    //Send Picture Size
+    printf("[+]Sending Picture Size\n");
+    write(sockfd, &size, sizeof(size));
+
+    //Send Picture as Byte Array (without need of a buffer as large as the image file)
+    printf("[+]Sending Picture as Byte Array\n");
+    char send_buffer[BUFSIZE]; // no link between BUFSIZE and the file size
+    int nb = fread(send_buffer, 1, sizeof(send_buffer), fp);
+    while(!feof(fp)) {
+    write(sockfd, send_buffer, nb);
+    nb = fread(send_buffer, 1, sizeof(send_buffer), fp);
+    // no need to bzero
     }
-    bzero(data, SIZE);
+
+}
+ 
+int main(){
+  char *ip = "192.168.100.9";
+  int port = 1717;
+  int e;
+ 
+  int sockfd;
+  struct sockaddr_in server_addr;
+  FILE *fp;
+  char *filename = "send2.png";
+ 
+  sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  if(sockfd < 0) {
+    perror("[-]Error in socket");
+    exit(1);
   }
-}
-
-void func(int sockfd)
-{
-    char buff[MAX];
-    int n;
-    for (;;) {
-        bzero(buff, sizeof(buff));
-        printf("Enter the string : ");
-        n = 0;
-        while ((buff[n++] = getchar()) != '\n')
-            ;
-        write(sockfd, buff, sizeof(buff));
-        bzero(buff, sizeof(buff));
-        read(sockfd, buff, sizeof(buff));
-        printf("From Server : %s", buff);
-        if ((strncmp(buff, "exit", 4)) == 0) {
-            printf("Client Exit...\n");
-            break;
-        }
-    }
-}
-   
-int main()
-{
-    int sockfd, connfd;
-    struct sockaddr_in servaddr, cli;
-	FILE *fp;
-  	char *filename = "send.txt";
-   
-    // socket create and verification
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd == -1) {
-        printf("[-]Socket creation failed...\n");
-        exit(0);
-    }
-    else
-        printf("[+]Socket successfully created..\n");
-    bzero(&servaddr, sizeof(servaddr));
-   
-    // assign IP, PORT
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_addr.s_addr = inet_addr("172.29.137.208");
-    servaddr.sin_port = htons(PORT);
-   
-    // connect the client socket to server socket
-    if (connect(sockfd, (SA*)&servaddr, sizeof(servaddr)) != 0) {
-        printf("[-]Connection with the server failed...\n");
-        exit(0);
-    }
-    else
-        printf("[+]connected to the server..\n");
-   
-    // function for chat
-	//func(sockfd);
-
-	fp = fopen(filename, "r");
-  	if (fp == NULL) {
-    	perror("[-]Error in reading file.");
-    	exit(1);
-  	}
+  printf("[+]Server socket created successfully.\n");
  
-  	send_file(fp, sockfd);
-  	printf("[+]File data sent successfully.\n");
-   
-    // close the socket
-	printf("[+]Closing the connection.\n");
-    close(sockfd);
+  server_addr.sin_family = AF_INET;
+  server_addr.sin_port = port;
+  server_addr.sin_addr.s_addr = inet_addr(ip);
+ 
+  e = connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr));
+  if(e == -1) {
+    perror("[-]Error in socket");
+    exit(1);
+  }
+ printf("[+]Connected to Server.\n");
+ 
+  fp = fopen(filename, "r");
+  if (fp == NULL) {
+    perror("[-]Error in reading file.");
+    exit(1);
+  }
+ 
+  send_image(fp, sockfd,300);
+  printf("[+]File data sent successfully.\n");
+ 
+  printf("[+]Closing the connection.\n");
+  close(sockfd);
+ 
+  return 0;
 }
