@@ -60,7 +60,10 @@ int server(const char * filename)
         int connfd = accept(listenfd, (struct sockaddr*)NULL ,NULL);
         //remove(filename);//Eliminar archivo
         //FILE *fp = fopen(filename, "ab");
-
+        //Read Pixels of picture
+        int pixels;
+        read(connfd, &pixels, sizeof(int));
+        printf("[+]Pixels received->%d \n",pixels);
         /* Receive data in chunks of BUF_SIZE bytes */
         int bytesReceived = 0;
         char buff[BUF_SIZE];

@@ -64,7 +64,7 @@ void send_char(int sockfd, int pixels){
     system("./base64img.sh send2.png");
 
     //Send Pixels of image
-    printf("[+]Sending Pixels\n");
+    printf("[+]Sending Pixels %d \n",pixels);
     write(sockfd, &pixels, sizeof(int));
 
     //Send Picture Size

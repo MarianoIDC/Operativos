@@ -13,7 +13,7 @@
 #define PORT 1717
 #define BUF_SIZE 256
 
-int client(const char* filename)
+int client(const char* filename, int pixels)
 {
     char *ip = "127.0.0.1";
     /* Create file where data will be stored */
@@ -40,10 +40,7 @@ int client(const char* filename)
         return 1;
     }
 
-    //for (;;)
-    //{
-        //int connfd = accept(sockfd, (struct sockaddr*)NULL ,NULL);
-
+   
         /* Open the file that we wish to transfer */
         FILE *fp = fopen(filename,"rb");
         if(fp==NULL)
@@ -51,7 +48,10 @@ int client(const char* filename)
             printf("[-]File open error");
             return 1;
         }
-
+        //Send Pixels of image
+        printf("[+]Sending Pixels %d \n",pixels);
+        //write(sockfd, &pixels, sizeof(int));
+        write(sockfd, pixels, sizeof(int));
         /* Read data from file and send it */
         for (;;)
         {
@@ -83,21 +83,22 @@ int client(const char* filename)
         }
         close(sockfd);
         sleep(1);
-    //}
-
+   
     return 0;
 }
 
 
 int main(int argc, char** argv)
 {
-    if (argc == 3)
+    if (argc == 4)
     {
         const char* mode = argv[1];
         const char* filename = argv[2];
+        char *a = argv[3];
+        int pixels = atoi(a);
         //const char* filename = "mario.png";
         if (strcmp(mode, "client") == 0)
-            return client(filename);
+            return client(filename, pixels);
 
         else
             printf("Invalid mode %s - should be 'client' or 'server'\n",mode);
