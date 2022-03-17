@@ -4,11 +4,11 @@ Description=ImageServer Daemon
 [Service]
 Type=simple
 
-ExecStart=/usr/bin/server
+ExecStart=/home/mariano/Documents/Operativos/Tarea1/Servidor/Server3
 
-ExecReload=/bin/kill -HUP $MAINPID
+ExecReload=/home/mariano/Documents/Operativos/Tarea1/Servidor/kill -HUP $MAINPID
 
-ExecStop= /bin/kill -2 $MAINPID
+ExecStop= /home/mariano/Documents/Operativos/Tarea1/Servidor/kill -2 $MAINPID
 
 User=root
 
