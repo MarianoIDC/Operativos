@@ -6,27 +6,53 @@
 #define BUFSIZE 1080
 #define MAX 80
 
-void write_file(int sockfd){
+void write_file(int sockfd)
+{
+    //Read Picture Size
+    printf("[+]Reading Picture Size\n");
+    int size;
+    read(sockfd, &size, sizeof(int));
 
+    //Read Picture Byte Array and Copy in file
+    printf("[+]Reading Picture Byte Array\n");
+    char p_array[BUFSIZE];
+    FILE *image = fopen("c1.png", "w");
+    int nb = read(sockfd, p_array, BUFSIZE);
+    while (nb > 0)
+    {
+      fwrite(p_array, 1, nb, image);
+      nb = read(sockfd, p_array, BUFSIZE);
+    }
+    fclose(image);
+    
+}
+
+// Function designed for chat between client and server.
+void func(int connfd)
+{
     char buff[MAX];
     int n;
-    for (::)
-    {
-      //Read Picture Size
-      printf("[+]Reading Picture Size\n");
-      int size;
-      read(sockfd, &size, sizeof(int));
-
-      //Read Picture Byte Array and Copy in file
-      printf("[+]Reading Picture Byte Array\n");
-      char p_array[BUFSIZE];
-      FILE *image = fopen("c1.png", "w");
-      int nb = read(sockfd, p_array, BUFSIZE);
-      while (nb > 0) {
-          fwrite(p_array, 1, nb, image);
-          nb = read(sockfd, p_array, BUFSIZE);
-      }
-      fclose(image);
+    // infinite loop for chat
+    for (;;) {
+        bzero(buff, MAX);
+   
+        // read the message from client and copy it in buffer
+        read(connfd, buff, sizeof(buff));
+        // print buffer which contains the client contents
+        printf("From client: %s\t To client : ", buff);
+        bzero(buff, MAX);
+        n = 0;
+        // copy server message in the buffer
+        while ((buff[n++] = getchar()) != '\n');
+   
+        // and send that buffer to client
+        write(connfd, buff, sizeof(buff));
+   
+        // if msg contains "Exit" then server exit and chat ended.
+        if (strncmp("exit", buff, 4) == 0) {
+            printf("Server Exit...\n");
+            break;
+        }
     }
 }
  
@@ -68,7 +94,7 @@ int main(){
   addr_size = sizeof(new_addr);
   new_sock = accept(sockfd, (struct sockaddr*)&new_addr, &addr_size);
   write_file(new_sock);
-  printf("[+]Data written in the file successfully.\n");
+  printf("[+]Reading Image.\n");
  
   return 0;
 }

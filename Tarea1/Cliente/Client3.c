@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <arpa/inet.h>
+#include <arpa/inet.h>\
+#define MAX 80
 #define SIZE 1024
 #define BUFSIZE 1080
  
