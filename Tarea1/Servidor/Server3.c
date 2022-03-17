@@ -25,7 +25,7 @@ void write_file(int sockfd){
 }
  
 int main(){
-  char *ip = "172.21.156.119";
+  char *ip = "172.17.226.245";
   int port = 2020;
   int e;
  
