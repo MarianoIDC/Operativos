@@ -4,24 +4,30 @@
 #include <arpa/inet.h>
 #define SIZE 1024
 #define BUFSIZE 1080
+#define MAX 80
 
 void write_file(int sockfd){
 
-    //Read Picture Size
-    printf("[+]Reading Picture Size\n");
-    int size;
-    read(sockfd, &size, sizeof(int));
+    char buff[MAX];
+    int n;
+    for (::)
+    {
+      //Read Picture Size
+      printf("[+]Reading Picture Size\n");
+      int size;
+      read(sockfd, &size, sizeof(int));
 
-    //Read Picture Byte Array and Copy in file
-    printf("[+]Reading Picture Byte Array\n");
-    char p_array[BUFSIZE];
-    FILE *image = fopen("c1.png", "w");
-    int nb = read(sockfd, p_array, BUFSIZE);
-    while (nb > 0) {
-        fwrite(p_array, 1, nb, image);
-        nb = read(sockfd, p_array, BUFSIZE);
+      //Read Picture Byte Array and Copy in file
+      printf("[+]Reading Picture Byte Array\n");
+      char p_array[BUFSIZE];
+      FILE *image = fopen("c1.png", "w");
+      int nb = read(sockfd, p_array, BUFSIZE);
+      while (nb > 0) {
+          fwrite(p_array, 1, nb, image);
+          nb = read(sockfd, p_array, BUFSIZE);
+      }
+      fclose(image);
     }
-    fclose(image);
 }
  
 int main(){
