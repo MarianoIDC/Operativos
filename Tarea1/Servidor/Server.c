@@ -23,7 +23,7 @@ void func(int connfd)
     // infinite loop for chat
     for (;;) {
         bzero(buff, MAX);
-   
+    
         // read the message from client and copy it in buffer
         read(connfd, buff, sizeof(buff));
         // print buffer which contains the client contents

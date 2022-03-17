@@ -93,7 +93,8 @@ int main(){
  
   addr_size = sizeof(new_addr);
   new_sock = accept(sockfd, (struct sockaddr*)&new_addr, &addr_size);
-  write_file(new_sock);
+  func(new_sock);
+  // write_file(new_sock);
   printf("[+]Reading Image.\n");
  
   return 0;
