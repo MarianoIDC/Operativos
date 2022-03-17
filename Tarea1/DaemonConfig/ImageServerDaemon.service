@@ -1,0 +1,20 @@
+[Unit]
+Description=ImageServer Daemon
+
+[Service]
+Type=simple
+
+ExecStart=/usr/bin/server
+
+ExecReload=/bin/kill -HUP $MAINPID
+
+ExecStop= /bin/kill -2 $MAINPID
+
+User=root
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
