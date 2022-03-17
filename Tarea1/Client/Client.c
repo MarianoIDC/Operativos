@@ -90,22 +90,20 @@ int client(const char* filename, int pixels)
 
 int main(int argc, char** argv)
 {
-    if (argc == 4)
+    if (argc == 3)
     {
-        const char* mode = argv[1];
-        const char* filename = argv[2];
-        char *a = argv[3];
+        
+        const char* filename = argv[1];
+        char *a = argv[2];
         int pixels = atoi(a);
         //const char* filename = "mario.png";
-        if (strcmp(mode, "client") == 0)
-            return client(filename, pixels);
+        
+        return client(filename, pixels);
 
-        else
-            printf("Invalid mode %s - should be 'client' or 'server'\n",mode);
     }
     else
     {
-        printf("Invalid number of argument, usage is %s [MODE] [FILENAME]\n",argv[0]);
+        printf("[-]Invalid number of argument, usage is %s [FILENAME] [PIXELS]\n",argv[0]);
     }
     return 1; // Something went wrong
 }
