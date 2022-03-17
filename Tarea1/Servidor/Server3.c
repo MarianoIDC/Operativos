@@ -26,7 +26,7 @@ void write_file(int sockfd){
  
 int main(){
   char *ip = "172.17.226.245";
-  int port = 2525;
+  int port = 1717;
   int e;
  
   int sockfd, new_sock;
@@ -43,8 +43,8 @@ int main(){
  
   server_addr.sin_family = AF_INET;
   server_addr.sin_port = port;
-  server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-  // server_addr.sin_addr.s_addr = inet_addr(ip);
+  //server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+  server_addr.sin_addr.s_addr = inet_addr(ip);
  
   e = bind(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr));
   if(e < 0) {
