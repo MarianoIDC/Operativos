@@ -22,14 +22,14 @@ int cmp_size_of_image(char *imageName, int pixel);
 // For server
 
 
-#define PORT 1717
+//#define PORT 1717
 #define BUF_SIZE 256
 
 
-int server()
+int server(int PORT,const char * filename)
 {
     int listenfd = socket(AF_INET, SOCK_STREAM, 0);
-    char* filename;
+
     printf("[+]Server socket created successfully.\n");
 
     struct sockaddr_in serv_addr;
@@ -46,57 +46,33 @@ int server()
         return -1;
     }
 
-    remove("image.png");
-    remove("image.jpg");
-    remove("image.jpeg");
-    remove("image.gif");
+    //Eliminar archivo 
+    //remove(filename);//Eliminar archivo
+    /* Create file where data will be stored */
+    FILE *fp = fopen(filename, "ab");
+    if(NULL == fp)
+    {
+        printf("[-]Error opening file.");
+        return 1;
+    }
     for (;;)
         {
-        
         int connfd = accept(listenfd, (struct sockaddr*)NULL ,NULL);
         //remove(filename);//Eliminar archivo
-        //FILE *fp = fopen(filename, "ab");
+        FILE *fp = fopen(filename, "ab");
         //Read Pixels of picture
         int pixels;
         read(connfd, &pixels, sizeof(int));
-
+        printf("[+]Pixels received->%d \n",pixels);
         int extension;
         read(connfd, &extension, sizeof(int));
-
-        if(extension== 0){
-            filename="image.png";
-        }
-        else if(extension == 1){
-            filename="image.jpg";
-        }
-        else if(extension == 2){
-            filename="image.gif";
-        }
-        else if(extension == 3){
-            filename="image.jpej";
-        }
-        remove(filename);//Eliminar archivo
-        printf(filename);
-        
-        //Eliminar archivo 
-        //remove(filename);//Eliminar archivo
-        /* Create file where data will be stored */
-        FILE *fp = fopen(filename, "ab");
-        if(NULL == fp)
-        {
-            printf("[-]Error opening file.");
-            return 1;
-        }
-
-
-        //printf("[+]Pixels received->%d \n",pixels);
         /* Receive data in chunks of BUF_SIZE bytes */
         int bytesReceived = 0;
         char buff[BUF_SIZE];
         memset(buff, '0', sizeof(buff));
         while((bytesReceived = read(connfd, buff, BUF_SIZE)) > 0)
         {
-            //printf("Bytes received %d\n",bytesReceived);
+            printf("Bytes received %d\n",bytesReceived);
             fwrite(buff, 1,bytesReceived,fp);
         }
         close(connfd);
@@ -115,17 +91,18 @@ int server()
 
 int main(int argc, char** argv)
 {
-    if (argc == 1)
+    if (argc == 3)
     {
-
-        //const char* filename = argv[1];
+        char *a = argv[1];
+        int PORT = atoi(a);
+        const char* filename = argv[2];
         //const char* filename = "mario.png";
-        return server();
+        return server(PORT, filename);
         
     }
     else
     {
-        printf("Invalid number of argument, usage is %s \n",argv[0]);
+        printf("Invalid number of argument, usage is %s [PORT] [FILENAME]\n",argv[0]);
     }
     return 1; // Something went wrong
 }
