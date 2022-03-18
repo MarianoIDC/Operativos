@@ -25,6 +25,7 @@ int cmp_size_of_image(char *imageName, int pixel);
 
 
 #define BUF_SIZE 256
+
 //#define PORT 1717
 
 //int server(int PORT, const char * filename)
@@ -34,7 +35,10 @@ int server(int PORT, const char * filename)
     int listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
     printf("[+]Server socket created successfully.\n");
-
+    FILE *LOG;
+        LOG = fopen("log.txt", "a");
+        fprintf(LOG, "[+]Server socket created successfully.\n");
+        fclose(LOG);
     struct sockaddr_in serv_addr;
     memset(&serv_addr, '0', sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
@@ -77,8 +81,17 @@ int server(int PORT, const char * filename)
             fwrite(buff, 1,bytesReceived,fp);
         }
         close(connfd);
+        
+        LOG = fopen("log.txt", "a");
+        fprintf(LOG, "[+]Image Received from Client!\n");
+        fclose(LOG);
         int compare= cmp_size_of_image(filename,pixels);
-        printf("[+]Exist %d px after the pixel %d px\n", compare, pixels);
+       
+        
+        LOG = fopen("log.txt", "a");
+        fprintf(LOG, "[+]Exist %d px after the pixel %d px\n", compare, pixels);
+        fprintf(LOG, "[-]Close Connection\n");
+        fclose(LOG);
         sleep(1);
 
         /*if(bytesReceived < 0)
@@ -94,7 +107,7 @@ int main(int argc, char** argv)
 {
     if (argc == 1)
     {
-        char line[RSIZ][LSIZ];
+    char line[RSIZ][LSIZ];
 	char* fname="conf.ini";
     FILE *fptr = NULL; 
     int i = 0;
@@ -115,6 +128,10 @@ int main(int argc, char** argv)
         //const char* filename = argv[2];
         const char* filename = "image.png";
         //return server(filename);
+        FILE *LOG;
+        LOG = fopen("log.txt", "a");
+        fprintf(LOG, "[+]Server Started in Port %d \n", PORT);
+        fclose(LOG);
         return server(PORT, filename);
     }
     else

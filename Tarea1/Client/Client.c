@@ -20,10 +20,9 @@
 
 int client(char* ip, int PORT, const char* filename, int pixels)
 {
-    
+
     /* Create file where data will be stored */
    
-
     /* Create a socket first */
     int sockfd = 0;
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0))< 0)

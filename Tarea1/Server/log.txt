@@ -1,0 +1,6 @@
+[+]Server Started in Port 1717 
+[+]Server Started in Port 1717 
+[+]Server socket created successfully.
+[+]Image Received from Client!
+[+]Exist 681417944 px after the pixel 1000 px
+[-]Close Connection
