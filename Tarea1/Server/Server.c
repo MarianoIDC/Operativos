@@ -16,7 +16,7 @@ int cmp_size_of_image(char *imageName, int pixel);
 
 //gcc -std=c17 -Wall Server.c -o Server -lm
 //gcc Server.c -o Server
-// ./Server server z.png
+// ./Server 1717 z.png
 //gcc Client.c -o Client
 // ./Client client mario.png
 // For server

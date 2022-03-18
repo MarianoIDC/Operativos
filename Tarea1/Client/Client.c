@@ -10,12 +10,17 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define PORT 1717
+
 #define BUF_SIZE 256
 
-int client(const char* filename, int pixels,int exension)
+
+//gcc Client.c -o Client
+// ./Client 127.0.0.1 1717 mario.png 1000
+
+
+int client(char* ip, int PORT, const char* filename, int pixels)
 {
-    char *ip = "127.0.0.1";
+    
     /* Create file where data will be stored */
    
 
@@ -58,6 +63,9 @@ int client(const char* filename, int pixels,int exension)
         printf("[+]Sending Pixels %d \n",pixels);
         //write(sockfd, &pixels, sizeof(int));
         write(sockfd, &pixels, sizeof(int));
+        //Send Pixels of image
+        //printf("[+]Sending extension file %d \n",extension);
+        //write(sockfd, &extension, sizeof(int));
         /* Read data from file and send it */
         for (;;)
         {
@@ -109,21 +117,24 @@ int detect_format(char* extension){
 
 int main(int argc, char** argv)
 {
-    if (argc == 4)
+    if (argc == 5)
     {
-        
-        const char* filename = argv[1];
-        char *a = argv[2];
-        char *format = argv[3];
+        char *ip = argv[1];
+        char *b= argv[2];
+        const char* filename = argv[3];
+        char *a = argv[4];
+        //char *format = argv[3];
         int pixels = atoi(a);
-        int extension=detect_format(format);
-        printf("Extension %d",extension);
-        return client(filename, pixels, extension);
+        int PORT = atoi(b);
+        //int extension=detect_format(format);
+        //printf("Extension %d",extension);
+        //return client(filename, pixels, extension);
+        return client(ip, PORT, filename, pixels);
 
     }
     else
     {
-        printf("[-]Invalid number of argument, usage is %s [FILENAME] [PIXELS] [EXTENSION]\n",argv[0]);
+        printf("[-]Invalid number of argument, usage is %s [IPSERVER] [PORT] [FILENAME] [PIXELS] \n",argv[0]);
     }
     return 1; // Something went wrong
 }
