@@ -1,3 +1,0 @@
-D:/Users/Mariano/OneDrive/Ingenieria en Computadores/2022/Semestre I/Operativos/Operativos/Tarea1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-D:/Users/Mariano/OneDrive/Ingenieria en Computadores/2022/Semestre I/Operativos/Operativos/Tarea1/cmake-build-debug/CMakeFiles/Tarea1.dir
-D:/Users/Mariano/OneDrive/Ingenieria en Computadores/2022/Semestre I/Operativos/Operativos/Tarea1/cmake-build-debug/CMakeFiles/edit_cache.dir

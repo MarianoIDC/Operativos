@@ -3,4 +3,4 @@ Server:
 
 
 clean:
-	rm *.o Server
+	rm Server
