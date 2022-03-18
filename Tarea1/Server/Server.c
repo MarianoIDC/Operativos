@@ -22,11 +22,10 @@ int cmp_size_of_image(char *imageName, int pixel);
 // For server
 
 
-//#define PORT 1717
 #define BUF_SIZE 256
 
 
-int server(int PORT,const char * filename)
+int server(int PORT, const char * filename)
 {
     int listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -47,7 +46,7 @@ int server(int PORT,const char * filename)
     }
 
     //Eliminar archivo 
-    //remove(filename);//Eliminar archivo
+    remove(filename);//Eliminar archivo
     /* Create file where data will be stored */
     FILE *fp = fopen(filename, "ab");
     if(NULL == fp)
@@ -59,25 +58,23 @@ int server(int PORT,const char * filename)
         {
         int connfd = accept(listenfd, (struct sockaddr*)NULL ,NULL);
         //remove(filename);//Eliminar archivo
-        FILE *fp = fopen(filename, "ab");
+        //FILE *fp = fopen(filename, "ab");
         //Read Pixels of picture
         int pixels;
         read(connfd, &pixels, sizeof(int));
         printf("[+]Pixels received->%d \n",pixels);
-        int extension;
-        read(connfd, &extension, sizeof(int));
         /* Receive data in chunks of BUF_SIZE bytes */
         int bytesReceived = 0;
         char buff[BUF_SIZE];
         memset(buff, '0', sizeof(buff));
         while((bytesReceived = read(connfd, buff, BUF_SIZE)) > 0)
         {
-            printf("Bytes received %d\n",bytesReceived);
+            //printf("Bytes received %d\n",bytesReceived);
             fwrite(buff, 1,bytesReceived,fp);
         }
         close(connfd);
-        int compare= cmp_size_of_image(filename,pixels);
-        printf("[+]Exist %d px after the pixel %d px\n", compare, pixels);
+        int compare= cmp_size_of_image(filename,300);
+        printf("[+]Exist %d px after the pixel %d px\n", compare, 300);
         sleep(1);
 
         /*if(bytesReceived < 0)
@@ -98,11 +95,10 @@ int main(int argc, char** argv)
         const char* filename = argv[2];
         //const char* filename = "mario.png";
         return server(PORT, filename);
-        
     }
     else
     {
-        printf("Invalid number of argument, usage is %s [PORT] [FILENAME]\n",argv[0]);
+        printf("Invalid number of argument, usage is %s [MODE] [FILENAME]\n",argv[0]);
     }
     return 1; // Something went wrong
 }
