@@ -13,7 +13,7 @@
 #define PORT 1717
 #define BUF_SIZE 256
 
-int client(const char* filename, int pixels)
+int client(const char* filename, int pixels,int exension)
 {
     char *ip = "127.0.0.1";
     /* Create file where data will be stored */
@@ -36,7 +36,7 @@ int client(const char* filename, int pixels)
     /* Attempt a connection */
     if(connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr))<0)
     {
-        printf("[-] Error : Connect Failed \n");
+        printf("[-]Error : Connect Failed \n");
         return 1;
     }
 
@@ -48,10 +48,16 @@ int client(const char* filename, int pixels)
             printf("[-]File open error");
             return 1;
         }
+        /*
+        //Send Filename of image
+        printf("[+]Sending Filename %d \n",filename);
+        //write(sockfd, &pixels, sizeof(int));
+        write(sockfd, &filename, sizeof(filename));
+        */
         //Send Pixels of image
         printf("[+]Sending Pixels %d \n",pixels);
         //write(sockfd, &pixels, sizeof(int));
-        write(sockfd, pixels, sizeof(int));
+        write(sockfd, &pixels, sizeof(int));
         /* Read data from file and send it */
         for (;;)
         {
@@ -86,24 +92,38 @@ int client(const char* filename, int pixels)
    
     return 0;
 }
-
+int detect_format(char* extension){
+    if(strcmp(extension, "PNG") == 0){
+        return 0;
+    }
+    else if(strcmp(extension, "JPG") == 0){
+        return 1;
+    }
+    else if(strcmp(extension, "GIF") == 0){
+        return 2;
+    }
+    else if(strcmp(extension, "JPEJ") == 0){
+        return 3;
+    }
+}
 
 int main(int argc, char** argv)
 {
-    if (argc == 3)
+    if (argc == 4)
     {
         
         const char* filename = argv[1];
         char *a = argv[2];
+        char *format = argv[3];
         int pixels = atoi(a);
-        //const char* filename = "mario.png";
-        
-        return client(filename, pixels);
+        int extension=detect_format(format);
+        printf("Extension %d",extension);
+        return client(filename, pixels, extension);
 
     }
     else
     {
-        printf("[-]Invalid number of argument, usage is %s [FILENAME] [PIXELS]\n",argv[0]);
+        printf("[-]Invalid number of argument, usage is %s [FILENAME] [PIXELS] [EXTENSION]\n",argv[0]);
     }
     return 1; // Something went wrong
 }

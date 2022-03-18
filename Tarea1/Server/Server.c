@@ -63,7 +63,7 @@ int server(const char * filename)
         //Read Pixels of picture
         int pixels;
         read(connfd, &pixels, sizeof(int));
-        printf("[+]Pixels received->%d \n",pixels);
+        //printf("[+]Pixels received->%d \n",pixels);
         /* Receive data in chunks of BUF_SIZE bytes */
         int bytesReceived = 0;
         char buff[BUF_SIZE];
@@ -74,8 +74,8 @@ int server(const char * filename)
             fwrite(buff, 1,bytesReceived,fp);
         }
         close(connfd);
-        int compare= cmp_size_of_image(filename,300);
-        printf("[+]Exist %d px after the pixel %d px\n", compare, 300);
+        int compare= cmp_size_of_image(filename,pixels);
+        printf("[+]Exist %d px after the pixel %d px\n", compare, pixels);
         sleep(1);
 
         /*if(bytesReceived < 0)
@@ -89,15 +89,13 @@ int server(const char * filename)
 
 int main(int argc, char** argv)
 {
-    if (argc == 3)
+    if (argc == 2)
     {
-        const char* mode = argv[1];
-        const char* filename = argv[2];
+
+        const char* filename = argv[1];
         //const char* filename = "mario.png";
-        if (strcmp(mode, "server") == 0)
-            return server(filename);
-        else
-            printf("Invalid mode %s - should be 'client' or 'server'\n",mode);
+        return server(filename);
+        
     }
     else
     {
