@@ -10,6 +10,8 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include "stb_image/stb_image.h"
+#define LSIZ 128 
+#define RSIZ 10 
 
 int size_of_image(char *imageName);
 int cmp_size_of_image(char *imageName, int pixel);
@@ -23,10 +25,11 @@ int cmp_size_of_image(char *imageName, int pixel);
 
 
 #define BUF_SIZE 256
-#define PORT 1717
+//#define PORT 1717
 
 //int server(int PORT, const char * filename)
-int server(const char * filename)
+//int server(const char * filename)
+int server(int PORT, const char * filename)
 {
     int listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -91,12 +94,28 @@ int main(int argc, char** argv)
 {
     if (argc == 1)
     {
+        char line[RSIZ][LSIZ];
+	char* fname="conf.ini";
+    FILE *fptr = NULL; 
+    int i = 0;
+    int tot = 0;
+
+    fptr = fopen(fname, "r");
+    while(fgets(line[i], LSIZ, fptr)) 
+	{
+        line[i][strlen(line[i]) - 1] = '\0';
+        i++;
+    }
+    char* temp=line[1];
+    int PORT = atoi(temp);
+    //printf(" %d\n", PORT);
+    char* PATH=line[3]; 
         //char *a = argv[1];
         //int PORT = atoi(a);
         //const char* filename = argv[2];
         const char* filename = "image.png";
-        return server(filename);
-        //return server(PORT, filename);
+        //return server(filename);
+        return server(PORT, filename);
     }
     else
     {
