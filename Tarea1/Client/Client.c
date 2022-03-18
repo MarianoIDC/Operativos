@@ -15,7 +15,7 @@
 
 
 //gcc Client.c -o Client
-// ./Client 127.0.0.1 1717 mario.png 1000
+// ./Client 192.168.100.9 1717 mario.png 1000
 
 
 int client(char* ip, int PORT, const char* filename, int pixels)

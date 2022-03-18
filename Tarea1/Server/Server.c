@@ -23,9 +23,10 @@ int cmp_size_of_image(char *imageName, int pixel);
 
 
 #define BUF_SIZE 256
+#define PORT 1717
 
-
-int server(int PORT, const char * filename)
+//int server(int PORT, const char * filename)
+int server(const char * filename)
 {
     int listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -62,7 +63,7 @@ int server(int PORT, const char * filename)
         //Read Pixels of picture
         int pixels;
         read(connfd, &pixels, sizeof(int));
-        printf("[+]Pixels received->%d \n",pixels);
+        //printf("[+]Pixels received->%d \n",pixels);
         /* Receive data in chunks of BUF_SIZE bytes */
         int bytesReceived = 0;
         char buff[BUF_SIZE];
@@ -73,8 +74,8 @@ int server(int PORT, const char * filename)
             fwrite(buff, 1,bytesReceived,fp);
         }
         close(connfd);
-        int compare= cmp_size_of_image(filename,300);
-        printf("[+]Exist %d px after the pixel %d px\n", compare, 300);
+        int compare= cmp_size_of_image(filename,pixels);
+        printf("[+]Exist %d px after the pixel %d px\n", compare, pixels);
         sleep(1);
 
         /*if(bytesReceived < 0)
@@ -88,17 +89,18 @@ int server(int PORT, const char * filename)
 
 int main(int argc, char** argv)
 {
-    if (argc == 3)
+    if (argc == 1)
     {
-        char *a = argv[1];
-        int PORT = atoi(a);
-        const char* filename = argv[2];
-        //const char* filename = "mario.png";
-        return server(PORT, filename);
+        //char *a = argv[1];
+        //int PORT = atoi(a);
+        //const char* filename = argv[2];
+        const char* filename = "image.png";
+        return server(filename);
+        //return server(PORT, filename);
     }
     else
     {
-        printf("Invalid number of argument, usage is %s [MODE] [FILENAME]\n",argv[0]);
+        printf("Invalid number of argument, usage is %s \n",argv[0]);
     }
     return 1; // Something went wrong
 }
