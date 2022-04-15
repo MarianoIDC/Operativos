@@ -5,22 +5,13 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-<<<<<<< HEAD
+
 int* globBlock; //global 
 int* memBlock; //memory block
 int* dtBlock; //date and time block
 int* statsBlock; //stats block
 
 int creator(){
-=======
-int main(){
-
-    int* globBlock; //global 
-    int* memBlock; //memory block
-    int* dtBlock; //date and time block
-    int* statsBlock; //stats block
-    //int i;
->>>>>>> Creador
 
     //size enter by user
     int size;
