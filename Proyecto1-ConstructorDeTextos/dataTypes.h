@@ -6,6 +6,21 @@
 #include <semaphore.h>
 #include <time.h>
 
+//semaphores needed
+typedef struct{
+    sem_t usage_sem;
+    sem_t full;
+    sem_t empty;
+}semaph; 
+
+//buffer data 
+typedef struct{
+    int head;
+    int tail;
+    int mxlen;
+
+}buffer;
+
 typedef struct{
     int key;
     int index;
@@ -25,14 +40,6 @@ typedef struct{
 
 }init_global;
 
-//buffer data 
-typedef struct{
-    int head;
-    int tail;
-    int mxlen;
-
-}buffer;
-
 //stats info
 typedef struct{
     int data;
@@ -43,12 +50,7 @@ typedef struct{
     double total_time;
 }stats;
 
-//semaphores needed
-typedef struct{
-    sem_t usage_sem;
-    sem_t full;
-    sem_t empty;
-}semaph;
+
 
 
 
