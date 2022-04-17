@@ -54,8 +54,11 @@ void readFile(char *filename){
             exit(EXIT_FAILURE);
     }
 
-
-
+    semaphtest sem_using = {
+        .semCreate = sem_create,
+        .semPush = sem_push,
+        .semPop = sem_pop
+    };
 
     //FILE PARAMETERS
     FILE* filePtr;
@@ -83,32 +86,28 @@ void readFile(char *filename){
                 t=time(NULL);
                 tm=localtime(&t);
                 strftime(fechayhora, 100, "%d/%m/%Y-%H:%M:%S", tm);
-                printf ("Dato: %c, logtime>>> %s\n", ch, fechayhora);
+                
+                //printf ("Dato: %c, logtime>>> %s\n", ch, fechayhora);
                 data dataI = {
                     .key = 0,
                     .index = 0,
-                    .current_time = tm,
+                    .current_time = t,
                     .data = ch
                 };
                 sem_wait(sem_push);
-                data *dataptr = push_data(&info_block->buff, dataI,buffer_name, &info_block->semaphores);
+                //data *dataptr =NULL;
+                data *dataptr = push_data(&info_block->buff, dataI,buffer_name, &sem_using);
                 if(dataptr!=NULL){
-                    printf("\nHERE SSSSS\n");
                     printData(dataptr,"mem.txt",instance_id,2.0);
-                    sem_post(sem_create);
-                    sem_post(sem_pop);
+                    
                 }else{
                     printf("IS NULL");
-                    sem_post(sem_pop);
+                    //sem_post(sem_pop);
                     break;
-                }printf("SEMAFORO PUSH");
-
-
-            }
-
-            
+                }sem_post(sem_create);
+                sem_post(sem_pop);
+            }          
         }
-        
 		// Checking if character is not EOF.
 		// If it is EOF stop eading.
 	} while (ch != EOF);

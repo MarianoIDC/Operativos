@@ -14,22 +14,19 @@
 
 int main(int argc, char *argv[]){
     char *buffer_name = "mem.txt";
+    
     int size = 250;
     printf("Digite un espacio para la memoria:");
     scanf("%d", &size);
     printf("El espacio solicitado es de: %d\n", size);
-
-    for (int i = 0; i < argc; ++i)
-        if (!strcmp(argv[i], "-n"))
-            buffer_name = argv[++i];
-        else if (!strcmp(argv[i], "-s"))
-            size = atoi(argv[++i]);
-
+    
     if (buffer_name == NULL || size < 1)
     {
         printf("Couldn't create Block: %s\n", buffer_name);
         return -1;
     }
+   
+    destroyMemoryInfoBlock(buffer_name,size);
 
     if (createMemoryBlock(buffer_name, INFO_SIZE))
         printf("Created Block: %s\n", buffer_name);
@@ -58,8 +55,7 @@ int main(int argc, char *argv[]){
         return -1;
     }
 
-    printf("INFOR...");
-    printf("%d",info_block->buff.head+1);
+
         
     int instance_id = getSharedId(buffer_name, size);
     memcpy(info_block, data_ptr, INFO_SIZE);
@@ -95,15 +91,19 @@ int main(int argc, char *argv[]){
     //sem_post(&info_block->semaphores.empty)
     int i =0;
    while(true){
-        printf("while...");
         sem_wait(sem_create);
-        for (i = 0; i < SIZE; ++i) {
-            printMemory(&info_block->buff, buffer_name);
+        printf("\n");
+        printf("---------------MEMORY-----------------\n");
+    
+        for (i = 0; i < size; ++i) {
+            printMemory(&info_block->buff, buffer_name, i);
         }
         //printf(info_block->buff.head);
         //i++;
         //printData(dataI.data, buffer_name, instance_id, 2.0);
-        
+        printf("--------------------------------------\n");
+        printf("-------------END MEMORY---------------\n");
+        printf("\n");
         sem_post(sem_push);
         sem_post(sem_pop);
        

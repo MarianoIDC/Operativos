@@ -15,6 +15,13 @@ typedef struct{
     sem_t empty;
 }semaph; 
 
+//semaphtest
+typedef struct{
+    sem_t semCreate;
+    sem_t semPush;
+    sem_t semPop;
+}semaphtest;
+
 //buffer data 
 typedef struct{
     int head;

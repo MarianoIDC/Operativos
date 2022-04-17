@@ -27,11 +27,12 @@ static bool empty(cirBuffer *c){
     return c->head == c->tail;
 }
 
-data *push_data(cirBuffer *c, data dataI, char *buffer_name, semaph sems){
+data *push_data(cirBuffer *c, data dataI, char *buffer_name, semaphtest sems){
     //action is push so we need to be clear that the resource will be in use
     //then the semaphore is called for usage
     //sem_wait(&sems.usage_sem);
-
+    //Changes --------------------
+    //sem_wait(&sems.semPush);
     //verify if is empty or full
     const bool was_empty = empty(c);
     const bool is_full = full(c);
@@ -60,38 +61,50 @@ data *push_data(cirBuffer *c, data dataI, char *buffer_name, semaph sems){
     *response = *buffer_val;
     detachMemoryDataBlock(buffer_val);
     //re-verify if empty or full
-    if (full(c))
+    if (full(c)){
+
+        //ESTADO DE BLOQUEO
         printf("FULL");
+        
+        //sem_post(&sems.semPop);
+        //sem_post(&sems.semCreate);
+    }
+        
         //sem_wait(&sems.full);
 
     if(was_empty)
         printf("EMPTY \n");
         //sem_post(&sems.empty);
 
-    //sem_post(&sems.usage_sem);
+    //CHANGES-------------
+    //sem_post(&sems.semPop); 
+    //sem_post(&sems.semCreate);
     return response;
 }
 
-data *printMemory(cirBuffer *c, char *buffer_name){
+data *printMemory(cirBuffer *circ, char *buffer_name, int i){
+    cirBuffer *c = &circ; 
     const bool was_full = full(c);
     const bool is_empty = empty(c);
+    
 
     if (is_empty)
         printf("EMPTY");
         //sem_wait(&sems.empty);
 
-    int next = c->tail + 1;
+    int next = c->head + i;
     const bool is_gt_size = next >= c->mxlen;
     if (is_gt_size)
         next = 0;
 
-    int i = c->tail;
-    data *buffer_val = attachMemoryDataBlock(buffer_name, BLOCK_SIZE, i + 1);
+    int j = c->tail;
+    data *buffer_val = attachMemoryDataBlock(buffer_name, BLOCK_SIZE, i);
 
     data *dataI = (data *)malloc(sizeof(data));
     *dataI = *buffer_val;
 
     c->tail = next;
+    
     detachMemoryDataBlock(buffer_val);
     
     
@@ -101,32 +114,32 @@ data *printMemory(cirBuffer *c, char *buffer_name){
     }
         //sem_wait(&sems.empty);
 
-    if(was_full)
+    if(was_full){
         printf("FULL");
         //sem_post(&sems.full);
-        printf("\n");
-    printf("--------------------------------------\n");
-    printf("---------------MEMORY-----------------\n");
+    }
     printf("Memory index: %i\n", dataI->index);
     printf("Message Emited Date: %s", ctime(&dataI->current_time));
     printf("Message: %c\n", dataI->data);
     //printf("Waited: %lf seconds\n", t);
     printf("--------------------------------------\n");
-    printf("\n");
     //sem_post(&sems.usage_sem);
     return dataI;
 }
 
 
-data *pop_data(cirBuffer *c, char *buffer_name, semaph sems){
+data *pop_data(cirBuffer *c, char *buffer_name, semaphtest sems){
     //sem_wait(&sems.usage_sem);
-
+    //sem_wait(&sems.semPop);
     const bool was_full = full(c);
     const bool is_empty = empty(c);
 
-    if (is_empty)
+    if (is_empty){
+        //ESTADO DE BLOQUEO
         printf("EMPTY");
-        //sem_wait(&sems.empty);
+        //sem_post(&sems.semPush);
+        //sem_post(&sems.semCreate);
+    }
 
     int next = c->tail + 1;
     const bool is_gt_size = next >= c->mxlen;
@@ -145,6 +158,9 @@ data *pop_data(cirBuffer *c, char *buffer_name, semaph sems){
     
     if (empty(c)){
         printf("EMPTY \n");
+        
+        //sem_post(&sems.semPush);
+        //sem_post(&sems.semCreate);
         return NULL;
     }
         //sem_wait(&sems.empty);
@@ -152,7 +168,8 @@ data *pop_data(cirBuffer *c, char *buffer_name, semaph sems){
     if(was_full)
         printf("FULL");
         //sem_post(&sems.full);
-
+    //sem_post(&sems.semPush);
+    //sem_post(&sems.semCreate);
     //sem_post(&sems.usage_sem);
     return dataI;
 }

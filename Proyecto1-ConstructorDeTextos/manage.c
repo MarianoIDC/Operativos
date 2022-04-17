@@ -99,3 +99,15 @@ bool createMemoryBlock(char *filename, int size){
 int getSharedId(char *filename, int size){
     return getSharedBlock(filename, size);
 }
+
+bool destroyMemoryInfoBlock(char *filename, int size){
+    int sharedId = getSharedId(filename, 0);
+
+    if(sharedId == IPC_RESULT_ERROR)
+        return NULL;
+
+    bool result = (shmctl(sharedId, IPC_RMID, NULL) != IPC_RESULT_ERROR);
+    result = result && (remove(filename) == 0);
+
+    return result;
+}

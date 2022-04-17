@@ -9,17 +9,14 @@
 #include <time.h>
 #include <unistd.h>
 #define INFO_SIZE sizeof(initGlobal)
-#define SIZE 5
+#define SIZE 20
 
 const char * filename= "reconstructor.txt";
 int concatChar(const char * filename, char value);
 
 int main(int argc, char *argv[]){
     rebuildFile();
-
-   
     return 0;
-
 }
 
 void rebuildFile(){
@@ -50,7 +47,11 @@ void rebuildFile(){
             //perror("sem_open/pop");
             exit(EXIT_FAILURE);
     }
-
+    semaphtest sem_using = {
+        .semCreate = sem_create,
+        .semPush = sem_push,
+        .semPop = sem_pop
+    };
 
 	// Print the elements of the array
     sem_wait(sem_pop);
@@ -65,13 +66,15 @@ void rebuildFile(){
             //return 0;
         }
         
-        data *dataptr= pop_data(&info_block->buff, buffer_name, &info_block->semaphores);
+        data *dataptr= pop_data(&info_block->buff, buffer_name, &sem_using);
         //fputc(memory[i],fp);
         fclose(fp);
         concatChar(filename,dataptr->data);
         readFile(filename);
-        printf("\nPOP VALUE: %c, \n", dataptr->data);
-        //sem_post(sem_push);
+        //printf("\nPOP VALUE: %c, \n", dataptr->data);
+        //printf("\nIndex VALUE: %c, \n", dataptr->index);
+        sem_post(sem_push);
+        sem_post(sem_create);
     }sem_close(sem_create);
     sem_close(sem_push);
     sem_close(sem_pop);
@@ -96,11 +99,11 @@ int readFile(const char * filename){
     do {
         ch = fgetc(fp);
         printf("%c", ch);
- 
         // Checking if character is not EOF.
         // If it is EOF stop eading.
     } while (ch != EOF);
     fclose(fp);
+    printf("\n**************END FILE******************\n");
     return 1;
 }
 int concatChar(const char * filename, char value){

@@ -13,6 +13,7 @@ data *attachMemoryDataBlock(char *filename, int size, int buffer_size);
 bool detachMemoryInfoBlock(initGlobal *block);
 bool detachMemoryDataBlock(data *block);
 bool createMemoryBlock(char *filename, int size);
+bool destroyMemoryInfoBlock(char *filename, int size);
 
 //char * attachMemoryBlock(char *filename, int size);
 //bool detachMemoryBlock(char *block);
