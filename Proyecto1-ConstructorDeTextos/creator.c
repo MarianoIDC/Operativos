@@ -11,8 +11,11 @@
 #define DATA_SIZE sizeof(data)
 
 int main(int argc, char *argv[]){
-    char *buffer_name = "test.txt";
+    char *buffer_name = "mem.txt";
     int size = 250;
+    printf("Digite un espacio para la memoria:");
+    scanf("%d", &size);
+    printf("El espacio solicitado es de: %d\n", size);
 
     for (int i = 0; i < argc; ++i)
         if (!strcmp(argv[i], "-n"))
@@ -53,6 +56,7 @@ int main(int argc, char *argv[]){
         return -1;
     }
         
+    int instance_id = getSharedBlock(buffer_name, size);
     memcpy(info_block, data_ptr, INFO_SIZE);
 
     sem_init(&info_block->semaphores.usage_sem, 1, 1);
@@ -62,6 +66,13 @@ int main(int argc, char *argv[]){
     sem_wait(&info_block->semaphores.empty);
 
     detachMemoryInfoBlock(info_block);
+    
+    printf(instance_id);
+   /*while(true){
+        printData(dataI.data, buffer_name, instance_id, 2.0);
+    }*/
 
     return 0;
 }
+
+
