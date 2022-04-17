@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
     char *buffer_name= "mem.txt";
     initGlobal *info_block = attachMemoryInfoBlock(buffer_name, INFO_SIZE);
     if(info_block==NULL){
-        print("ERROR INF");
+        printf("ERROR INF");
         return -1;
     }
     int instance_id = getSharedId(buffer_name, INFO_SIZE);
@@ -51,20 +51,19 @@ int main(int argc, char *argv[]){
         .current_time = t,
         .data = 125
         };
+        sem_wait(sem_push);
         data *dataptr = push_data(&info_block->buff, dataI,buffer_name, &info_block->semaphores);
         if(dataptr!=NULL){
             printData(dataptr,"test",instance_id,2.0);
+            sem_post(sem_create);
         }else{
             printf("IS NULL");
+            sem_post(sem_create);
             break;
-        }
+        }printf("SEmAFORO PUSH");
     }
     
     
-    sem_wait(sem_push);
-   printf("SEmAFORO PUSH");
-    sem_post(sem_create);
-
 
     sem_close(sem_create);
     sem_close(sem_push);

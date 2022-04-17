@@ -7,6 +7,7 @@
 #include "dataTypes.h"
 #include "dataManage.h"
 #include <sys/ipc.h>
+#include <fcntl.h>
 
 #define INFO_SIZE sizeof(initGlobal)
 #define DATA_SIZE sizeof(data)
@@ -64,14 +65,14 @@ int main(int argc, char *argv[]){
     sem_unlink(SEM_PUSH_FNAME);
 
 
-    sem_t *sem_create= sem_open(SEM_CREATE_FNAME, IPC_CREAT,0660,0);
+    sem_t *sem_create= sem_open(SEM_CREATE_FNAME,  O_CREAT | O_EXCL,0660,1);
     if(sem_create==SEM_FAILED){
         printf("SEM CREATE");
         //perror("sem_open/create");
         exit(EXIT_FAILURE);
     }
 
-    sem_t *sem_push= sem_open(SEM_PUSH_FNAME, IPC_CREAT,0660,0);
+    sem_t *sem_push= sem_open(SEM_PUSH_FNAME,  O_CREAT | O_EXCL,0660,0);
     if(sem_push==SEM_FAILED){
         printf("SEM PUSH");
         //perror("sem_open/push");
@@ -79,7 +80,7 @@ int main(int argc, char *argv[]){
     }
 
 
-    sem_t *sem_pop= sem_open(SEM_POP_FNAME, IPC_CREAT,0660,0);
+    sem_t *sem_pop= sem_open(SEM_POP_FNAME,  O_CREAT | O_EXCL,0660,0);
         if(sem_pop==SEM_FAILED){
             printf("SEM POP");
             //perror("sem_open/pop");
@@ -90,6 +91,7 @@ int main(int argc, char *argv[]){
     //sem_wait(&info_block->semaphores.empty);
     //sem_post(&info_block->semaphores.empty)
    while(true){
+       printf("while...");
         sem_wait(sem_create);
         printData(dataI.data, buffer_name, instance_id, 2.0);
         sem_post(sem_push);
