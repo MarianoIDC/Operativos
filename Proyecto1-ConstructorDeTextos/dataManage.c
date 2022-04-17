@@ -30,7 +30,7 @@ static bool empty(cirBuffer *c){
 data *push_data(cirBuffer *c, data dataI, char *buffer_name, semaph sems){
     //action is push so we need to be clear that the resource will be in use
     //then the semaphore is called for usage
-    sem_wait(&sems.usage_sem);
+    //sem_wait(&sems.usage_sem);
 
     //verify if is empty or full
     const bool was_empty = empty(c);
@@ -38,7 +38,8 @@ data *push_data(cirBuffer *c, data dataI, char *buffer_name, semaph sems){
 
     // if true the full sems is called
     if (is_full)
-        sem_wait(&sems.full);
+        printf("IS FULL");
+        //sem_wait(&sems.full);
 
     int next = c->head + 1;
     
@@ -60,12 +61,14 @@ data *push_data(cirBuffer *c, data dataI, char *buffer_name, semaph sems){
     detachMemoryDataBlock(buffer_val);
     //re-verify if empty or full
     if (full(c))
-        sem_wait(&sems.full);
+        printf("FULL");
+        //sem_wait(&sems.full);
 
     if(was_empty)
-        sem_post(&sems.empty);
+        printf("EMPY");
+        //sem_post(&sems.empty);
 
-    sem_post(&sems.usage_sem);
+    //sem_post(&sems.usage_sem);
     return response;
 }
 

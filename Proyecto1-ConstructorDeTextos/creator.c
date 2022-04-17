@@ -6,10 +6,14 @@
 #include "manage.h"
 #include "dataTypes.h"
 #include "dataManage.h"
+#include <sys/ipc.h>
 
 #define INFO_SIZE sizeof(initGlobal)
 #define DATA_SIZE sizeof(data)
 
+#define SEM_CREATE_FNAME "/create"
+#define SEM_PUSH_FNAME "/push"
+#define SEM_POP_FNAME "/pop"
 int main(int argc, char *argv[]){
     char *buffer_name = "mem.txt";
     int size = 250;
@@ -58,20 +62,46 @@ int main(int argc, char *argv[]){
         
     int instance_id = getSharedId(buffer_name, size);
     memcpy(info_block, data_ptr, INFO_SIZE);
+    sem_unlink(SEM_CREATE_FNAME);
+    sem_unlink(SEM_POP_FNAME);
+    sem_unlink(SEM_PUSH_FNAME);
 
-    sem_init(&info_block->semaphores.usage_sem, 1, 1);
-    sem_init(&info_block->semaphores.full, 1, 1);
-    sem_init(&info_block->semaphores.empty, 1, 1);
 
-    sem_wait(&info_block->semaphores.empty);
+    sem_t *sem_create= sem_open(SEM_CREATE_FNAME, IPC_CREAT,0660,0);
+    if(sem_create==SEM_FAILED){
+        printf("SEM CREATE");
+        //perror("sem_open/create");
+        exit(EXIT_FAILURE);
+    }
+
+    sem_t *sem_push= sem_open(SEM_PUSH_FNAME, IPC_CREAT,0660,0);
+    if(sem_push==SEM_FAILED){
+        printf("SEM PUSH");
+        //perror("sem_open/push");
+        exit(EXIT_FAILURE);
+    }
+
+
+    sem_t *sem_pop= sem_open(SEM_POP_FNAME, IPC_CREAT,0660,0);
+        if(sem_pop==SEM_FAILED){
+            printf("SEM POP");
+            //perror("sem_open/pop");
+            exit(EXIT_FAILURE);
+    }
+
+
+    //sem_wait(&info_block->semaphores.empty);
+    //sem_post(&info_block->semaphores.empty)
+   while(true){
+        sem_wait(sem_create);
+        printData(dataI.data, buffer_name, instance_id, 2.0);
+        sem_post(sem_push);
+    }
+    sem_close(sem_create);
+    sem_close(sem_push);
+    sem_close(sem_pop);
 
     detachMemoryInfoBlock(info_block);
-    
-    printf("%d",instance_id);
-    printData(dataI.data, buffer_name, instance_id, 2.0);
-   /*while(true){
-        printData(dataI.data, buffer_name, instance_id, 2.0);
-    }*/
 
     return 0;
 }

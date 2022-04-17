@@ -4,6 +4,9 @@
 #include <stdbool.h>
 #include "dataTypes.h"
 
+#define SEM_CREATE_FNAME "/create"
+#define SEM_PUSH_FNAME "/push"
+#define SEM_POP_FNAME "/pop"
 int getSharedId(char *filename, int size);
 initGlobal *attachMemoryInfoBlock(char *filename, int size);
 data *attachMemoryDataBlock(char *filename, int size, int buffer_size);
