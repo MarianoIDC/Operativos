@@ -7,7 +7,7 @@ int main() {
   {
       numero = &i;
       numero+=1;
-      printf("El valo de numero es: %d\n", &numero);
+      printf("El valo de numero es: %d\n", numero);
   }
   
 } 
