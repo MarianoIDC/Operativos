@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include "dataTypes.h"
 
-static int getSharedBlock(char *filename, int size);
+int getSharedId(char *filename, int size);
 initGlobal *attachMemoryInfoBlock(char *filename, int size);
 data *attachMemoryDataBlock(char *filename, int size, int buffer_size);
 bool detachMemoryInfoBlock(initGlobal *block);

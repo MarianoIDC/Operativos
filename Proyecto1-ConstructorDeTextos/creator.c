@@ -56,7 +56,7 @@ int main(int argc, char *argv[]){
         return -1;
     }
         
-    int instance_id = getSharedBlock(buffer_name, size);
+    int instance_id = getSharedId(buffer_name, size);
     memcpy(info_block, data_ptr, INFO_SIZE);
 
     sem_init(&info_block->semaphores.usage_sem, 1, 1);
@@ -67,7 +67,8 @@ int main(int argc, char *argv[]){
 
     detachMemoryInfoBlock(info_block);
     
-    printf(instance_id);
+    printf("%d",instance_id);
+    printData(dataI.data, buffer_name, instance_id, 2.0);
    /*while(true){
         printData(dataI.data, buffer_name, instance_id, 2.0);
     }*/

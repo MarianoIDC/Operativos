@@ -95,3 +95,7 @@ bool createMemoryBlock(char *filename, int size){
         return NULL;
     return sharedId;
 }
+
+int getSharedId(char *filename, int size){
+    return getSharedBlock(filename, size);
+}

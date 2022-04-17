@@ -1,5 +1,5 @@
 all:
-	gcc -std=c17 -Wall -lpthread -lrt dataTypes.c manage.c dataManage.c creator.c -o run
+	gcc -std=c17 -Wall -lpthread -lrt dataTypes.c dataManage.c creator.c manage.c -o  run 
 	./run
 
 build:
