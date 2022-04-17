@@ -111,13 +111,11 @@ void readFile(char *filename){
 		// Checking if character is not EOF.
 		// If it is EOF stop eading.
 	} while (ch != EOF);
+    info_block->stop=true;
     sem_post(sem_pop);
-
-
     sem_close(sem_create);
     sem_close(sem_push);
     sem_close(sem_pop);
-
     detachMemoryInfoBlock(info_block);
 
 	// Closing the file

@@ -13,8 +13,13 @@
 #define DATA_SIZE sizeof(data)
 
 int main(int argc, char *argv[]){
-    char *buffer_name = "mem.txt";
     
+    char *buffer_name = "mem.txt";
+    if(remove(buffer_name)==0){
+        printf("Remove was suscesful!");
+    }else{
+        printf("ERRROR");
+    }
     int size = 250;
     printf("Digite un espacio para la memoria:");
     scanf("%d", &size);
@@ -26,7 +31,7 @@ int main(int argc, char *argv[]){
         return -1;
     }
    
-    destroyMemoryInfoBlock(buffer_name,size);
+   
 
     if (createMemoryBlock(buffer_name, INFO_SIZE))
         printf("Created Block: %s\n", buffer_name);
@@ -48,6 +53,7 @@ int main(int argc, char *argv[]){
 
     initGlobal *data_ptr = &dataI;
     initGlobal *info_block = attachMemoryInfoBlock(buffer_name, INFO_SIZE);
+    info_block->stop=false;
 
     if (info_block == NULL)
     {
@@ -90,7 +96,7 @@ int main(int argc, char *argv[]){
     //sem_wait(&info_block->semaphores.empty);
     //sem_post(&info_block->semaphores.empty)
     int i =0;
-   while(true){
+   while(!info_block->stop){
         sem_wait(sem_create);
         printf("\n");
         printf("---------------MEMORY-----------------\n");
@@ -98,22 +104,24 @@ int main(int argc, char *argv[]){
         for (i = 0; i < size; ++i) {
             printMemory(&info_block->buff, buffer_name, i);
         }
-        //printf(info_block->buff.head);
-        //i++;
-        //printData(dataI.data, buffer_name, instance_id, 2.0);
         printf("--------------------------------------\n");
         printf("-------------END MEMORY---------------\n");
         printf("\n");
         sem_post(sem_push);
         sem_post(sem_pop);
        
-    }
+    }printf("END");
     sem_close(sem_create);
     sem_close(sem_push);
     sem_close(sem_pop);
-
     detachMemoryInfoBlock(info_block);
-
+     if(destroyMemoryInfoBlock(buffer_name)){
+        printf("\nDetach Memory\n");
+    }else{
+        printf("\nERROR: Detach Memory\n");
+    }
+    
+    printf("END");
     return 0;
 }
 

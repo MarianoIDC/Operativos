@@ -100,8 +100,8 @@ int getSharedId(char *filename, int size){
     return getSharedBlock(filename, size);
 }
 
-bool destroyMemoryInfoBlock(char *filename, int size){
-    int sharedId = getSharedId(filename, 0);
+bool destroyMemoryInfoBlock(char *filename){
+    int sharedId = getSharedBlock(filename, 0);
 
     if(sharedId == IPC_RESULT_ERROR)
         return NULL;
