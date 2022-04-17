@@ -11,9 +11,6 @@
 #define INFO_SIZE sizeof(initGlobal)
 #define DATA_SIZE sizeof(data)
 
-#define SEM_CREATE_FNAME "/create"
-#define SEM_PUSH_FNAME "/push"
-#define SEM_POP_FNAME "/pop"
 int main(int argc, char *argv[]){
     char *buffer_name = "mem.txt";
     int size = 250;

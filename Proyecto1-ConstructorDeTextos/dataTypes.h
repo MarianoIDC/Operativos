@@ -31,12 +31,12 @@ typedef struct{
 
 //global data, should be share with all process
 typedef struct{
+    char data[SIZE];
     semaph semaphores;
     int size;
     cirBuffer buff;
     bool stop;
-    int N;
-    char data[SIZE];
+    
 }initGlobal;
 
 //stats info
