@@ -11,8 +11,8 @@
 #define DATA_SIZE sizeof(data)
 
 int main(int argc, char *argv[]){
-    char *buffer_name = NULL;
-    int size = 0;
+    char *buffer_name = "test.txt";
+    int size = 250;
 
     for (int i = 0; i < argc; ++i)
         if (!strcmp(argv[i], "-n"))
