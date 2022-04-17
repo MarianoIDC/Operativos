@@ -95,11 +95,15 @@ int main(int argc, char *argv[]){
     //sem_post(&info_block->semaphores.empty)
     int i =0;
    while(true){
-       printf("while...");
+        printf("while...");
         sem_wait(sem_create);
+        for (i = 0; i < SIZE; ++i) {
+            printMemory(&info_block->buff, buffer_name);
+        }
         //printf(info_block->buff.head);
         //i++;
-        printData(dataI.data, buffer_name, instance_id, 2.0);
+        //printData(dataI.data, buffer_name, instance_id, 2.0);
+        
         sem_post(sem_push);
         sem_post(sem_pop);
        

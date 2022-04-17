@@ -72,6 +72,52 @@ data *push_data(cirBuffer *c, data dataI, char *buffer_name, semaph sems){
     return response;
 }
 
+data *printMemory(cirBuffer *c, char *buffer_name){
+    const bool was_full = full(c);
+    const bool is_empty = empty(c);
+
+    if (is_empty)
+        printf("EMPTY");
+        //sem_wait(&sems.empty);
+
+    int next = c->tail + 1;
+    const bool is_gt_size = next >= c->mxlen;
+    if (is_gt_size)
+        next = 0;
+
+    int i = c->tail;
+    data *buffer_val = attachMemoryDataBlock(buffer_name, BLOCK_SIZE, i + 1);
+
+    data *dataI = (data *)malloc(sizeof(data));
+    *dataI = *buffer_val;
+
+    c->tail = next;
+    detachMemoryDataBlock(buffer_val);
+    
+    
+    if (empty(c)){
+        printf("EMPTY \n");
+        return NULL;
+    }
+        //sem_wait(&sems.empty);
+
+    if(was_full)
+        printf("FULL");
+        //sem_post(&sems.full);
+        printf("\n");
+    printf("--------------------------------------\n");
+    printf("---------------MEMORY-----------------\n");
+    printf("Memory index: %i\n", dataI->index);
+    printf("Message Emited Date: %s", ctime(&dataI->current_time));
+    printf("Message: %c\n", dataI->data);
+    //printf("Waited: %lf seconds\n", t);
+    printf("--------------------------------------\n");
+    printf("\n");
+    //sem_post(&sems.usage_sem);
+    return dataI;
+}
+
+
 data *pop_data(cirBuffer *c, char *buffer_name, semaph sems){
     //sem_wait(&sems.usage_sem);
 

@@ -70,7 +70,7 @@ void rebuildFile(){
         fclose(fp);
         concatChar(filename,dataptr->data);
         readFile(filename);
-        printf("POP VALUE: %c, \n", dataptr->data);
+        printf("\nPOP VALUE: %c, \n", dataptr->data);
         //sem_post(sem_push);
     }sem_close(sem_create);
     sem_close(sem_push);
