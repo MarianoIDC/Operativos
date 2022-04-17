@@ -65,7 +65,7 @@ data *push_data(cirBuffer *c, data dataI, char *buffer_name, semaph sems){
         //sem_wait(&sems.full);
 
     if(was_empty)
-        printf("EMPY");
+        printf("EMPTY");
         //sem_post(&sems.empty);
 
     //sem_post(&sems.usage_sem);

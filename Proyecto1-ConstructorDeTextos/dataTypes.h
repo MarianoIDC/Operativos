@@ -26,7 +26,7 @@ typedef struct{
     int key;
     int index;
     time_t current_time;
-    int data;
+    char data;
 }data;
 
 //global data, should be share with all process
