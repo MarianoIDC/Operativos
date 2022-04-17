@@ -1,7 +1,7 @@
 CC=clang
 CFLAGS=-g -Wall
-OBJS=manage.o
-EXE=writeShareMem.elf readShareMem.elf
+OBJS=manage.o dataTypes.o dataManage.o
+EXE=creator.elf 
 
 all: $(EXE)
 
