@@ -9,6 +9,10 @@ build:
 creator: 
 	gcc -std=c17 -Wall -lpthread -lrt manage.c dataTypes.c dataManage.c creator.c -o creator
 	./creator
+
+reconstructor: 
+	gcc -std=c17 -Wall -lpthread -lrt manage.c dataTypes.c dataManage.c reconstructor.c -o rec
+	./rec
 run:
 	./run
 

@@ -57,6 +57,9 @@ int main(int argc, char *argv[]){
         printf("ERROR: couldn't get Block: %s\n", buffer_name);
         return -1;
     }
+
+    printf("INFOR...");
+    printf("%d",info_block->buff.head+1);
         
     int instance_id = getSharedId(buffer_name, size);
     memcpy(info_block, data_ptr, INFO_SIZE);
@@ -86,15 +89,20 @@ int main(int argc, char *argv[]){
             //perror("sem_open/pop");
             exit(EXIT_FAILURE);
     }
-
+    
 
     //sem_wait(&info_block->semaphores.empty);
     //sem_post(&info_block->semaphores.empty)
+    int i =0;
    while(true){
        printf("while...");
         sem_wait(sem_create);
+        //printf(info_block->buff.head);
+        //i++;
         printData(dataI.data, buffer_name, instance_id, 2.0);
         sem_post(sem_push);
+        sem_post(sem_pop);
+       
     }
     sem_close(sem_create);
     sem_close(sem_push);

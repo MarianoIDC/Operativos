@@ -26,6 +26,7 @@ int main(int argc, char *argv[]){
 void readFile(char *filename){
     char *buffer_name= "mem.txt";
     initGlobal *info_block = attachMemoryInfoBlock(buffer_name, INFO_SIZE);
+    //initGlobal *info_block = attachMemoryDataBlock(buffer_name, INFO_SIZE);
     if(info_block==NULL){
         printf("ERROR INF");
         return -1;
@@ -92,13 +93,15 @@ void readFile(char *filename){
                 sem_wait(sem_push);
                 data *dataptr = push_data(&info_block->buff, dataI,buffer_name, &info_block->semaphores);
                 if(dataptr!=NULL){
+                    printf("\nHERE SSSSS\n");
                     printData(dataptr,"mem.txt",instance_id,2.0);
                     sem_post(sem_create);
+                    sem_post(sem_pop);
                 }else{
                     printf("IS NULL");
-                    sem_post(sem_create);
+                    sem_post(sem_pop);
                     break;
-                }printf("SEmAFORO PUSH");
+                }printf("SEMAFORO PUSH");
 
 
             }
@@ -109,6 +112,7 @@ void readFile(char *filename){
 		// Checking if character is not EOF.
 		// If it is EOF stop eading.
 	} while (ch != EOF);
+    sem_post(sem_pop);
 
 
     sem_close(sem_create);

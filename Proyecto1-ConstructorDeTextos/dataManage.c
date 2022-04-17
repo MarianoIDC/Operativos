@@ -65,7 +65,7 @@ data *push_data(cirBuffer *c, data dataI, char *buffer_name, semaph sems){
         //sem_wait(&sems.full);
 
     if(was_empty)
-        printf("EMPTY");
+        printf("EMPTY \n");
         //sem_post(&sems.empty);
 
     //sem_post(&sems.usage_sem);
@@ -73,13 +73,14 @@ data *push_data(cirBuffer *c, data dataI, char *buffer_name, semaph sems){
 }
 
 data *pop_data(cirBuffer *c, char *buffer_name, semaph sems){
-    sem_wait(&sems.usage_sem);
+    //sem_wait(&sems.usage_sem);
 
     const bool was_full = full(c);
     const bool is_empty = empty(c);
 
     if (is_empty)
-        sem_wait(&sems.empty);
+        printf("EMPTY");
+        //sem_wait(&sems.empty);
 
     int next = c->tail + 1;
     const bool is_gt_size = next >= c->mxlen;
@@ -96,12 +97,16 @@ data *pop_data(cirBuffer *c, char *buffer_name, semaph sems){
     detachMemoryDataBlock(buffer_val);
     
     
-    if (empty(c))
-        sem_wait(&sems.empty);
+    if (empty(c)){
+        printf("EMPTY \n");
+        return NULL;
+    }
+        //sem_wait(&sems.empty);
 
     if(was_full)
-        sem_post(&sems.full);
+        printf("FULL");
+        //sem_post(&sems.full);
 
-    sem_post(&sems.usage_sem);
+    //sem_post(&sems.usage_sem);
     return dataI;
 }
