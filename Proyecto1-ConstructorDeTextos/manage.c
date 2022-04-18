@@ -111,3 +111,15 @@ bool destroyMemoryInfoBlock(char *filename){
 
     return result;
 }
+
+bool destroyMemoryDataBlock(char *filename, int size, int num){
+    int sharedId = getSharedDataBlock(filename,size, num);
+
+    if(sharedId == IPC_RESULT_ERROR)
+        return NULL;
+
+    bool result = (shmctl(sharedId, IPC_RMID, NULL) != IPC_RESULT_ERROR);
+    result = result && (remove(filename) == 0);
+
+    return result;
+}

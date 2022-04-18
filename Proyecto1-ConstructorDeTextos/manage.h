@@ -14,6 +14,7 @@ bool detachMemoryInfoBlock(initGlobal *block);
 bool detachMemoryDataBlock(data *block);
 bool createMemoryBlock(char *filename, int size);
 bool destroyMemoryInfoBlock(char *filename);
+bool destroyMemoryDataBlock(char *filename, int size, int num);
 
 //char * attachMemoryBlock(char *filename, int size);
 //bool detachMemoryBlock(char *block);

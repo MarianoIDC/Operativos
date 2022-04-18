@@ -15,11 +15,12 @@
 int main(int argc, char *argv[]){
     
     char *buffer_name = "mem.txt";
+    /*
     if(remove(buffer_name)==0){
         printf("Remove was suscesful!");
     }else{
         printf("ERRROR");
-    }
+    }*/
     int size = 250;
     printf("Digite un espacio para la memoria:");
     scanf("%d", &size);

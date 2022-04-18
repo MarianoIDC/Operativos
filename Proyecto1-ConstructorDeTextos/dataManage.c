@@ -63,6 +63,7 @@ data *push_data(cirBuffer *c, data dataI, char *buffer_name, semaphtest sems){
     //re-verify if empty or full
     if (full(c)){
 
+
         //ESTADO DE BLOQUEO
         printf("FULL");
         
@@ -86,8 +87,6 @@ data *printMemory(cirBuffer *circ, char *buffer_name, int i){
     cirBuffer *c = &circ; 
     const bool was_full = full(c);
     const bool is_empty = empty(c);
-    
-
     if (is_empty)
         printf("EMPTY");
         //sem_wait(&sems.empty);
@@ -148,13 +147,14 @@ data *pop_data(cirBuffer *c, char *buffer_name, semaphtest sems){
 
     int i = c->tail;
     data *buffer_val = attachMemoryDataBlock(buffer_name, BLOCK_SIZE, i + 1);
-
+    
     data *dataI = (data *)malloc(sizeof(data));
     *dataI = *buffer_val;
-
+    buffer_val->data=NULL;
     c->tail = next;
     detachMemoryDataBlock(buffer_val);
     
+    //destroyMemoryDataBlock(buffer_name,BLOCK_SIZE, i+1);
     
     if (empty(c)){
         printf("EMPTY \n");

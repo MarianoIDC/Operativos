@@ -54,8 +54,9 @@ void rebuildFile(){
     };
 
 	// Print the elements of the array
-    sem_wait(sem_pop);
+    
     for (i = 0; i < SIZE; ++i) {
+        sem_wait(sem_pop);
         printf("\n Press ENTER key to Continue\n"); 
         getchar();
         //printf("Memory address: 0x%08x with value %c\n", &memory+i,memory[i]);
@@ -94,7 +95,7 @@ int readFile(const char * filename){
         return 0;
     }
     printf("****************************************\n");
-    printf("**************NEW FILE******************\n");
+    printf("**************BUILD FILE*****************\n");
     printf("****************************************\n");
     do {
         ch = fgetc(fp);
