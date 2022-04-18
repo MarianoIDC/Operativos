@@ -136,13 +136,12 @@ void readFile(char *filename){
     info_block->stat.block_client=stats_block.block_client;
     info_block->stat.transfer=stats_block.transfer;
     info_block->stat.total_time+=stats_block.total_time;
-    
+
 
     sem_post(sem_pop);
     sem_close(sem_create);
     sem_close(sem_push);
     sem_close(sem_pop);
-    print_stats(info_block->stat);
     
     detachMemoryInfoBlock(info_block);
 

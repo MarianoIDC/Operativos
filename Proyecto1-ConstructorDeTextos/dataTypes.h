@@ -53,6 +53,7 @@ typedef struct{
     int size;
     cirBuffer buff;
     bool stop;
+    bool total_stop;
     stats stat;
     
 }initGlobal;

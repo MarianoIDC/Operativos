@@ -7,6 +7,7 @@
 #define SEM_CREATE_FNAME "/create"
 #define SEM_PUSH_FNAME "/push"
 #define SEM_POP_FNAME "/pop"
+#define SEM_STATS_FNAME "/stats"
 int getSharedId(char *filename, int size);
 initGlobal *attachMemoryInfoBlock(char *filename, int size);
 data *attachMemoryDataBlock(char *filename, int size, int buffer_size);

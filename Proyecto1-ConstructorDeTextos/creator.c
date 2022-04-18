@@ -55,6 +55,7 @@ int main(int argc, char *argv[]){
     initGlobal *data_ptr = &dataI;
     initGlobal *info_block = attachMemoryInfoBlock(buffer_name, INFO_SIZE);
     info_block->stop=false;
+    info_block->total_stop=false;
 
     if (info_block == NULL)
     {
@@ -69,7 +70,7 @@ int main(int argc, char *argv[]){
     sem_unlink(SEM_CREATE_FNAME);
     sem_unlink(SEM_POP_FNAME);
     sem_unlink(SEM_PUSH_FNAME);
-
+    sem_unlink(SEM_STATS_FNAME);
 
     sem_t *sem_create= sem_open(SEM_CREATE_FNAME,  O_CREAT | O_EXCL,0660,1);
     if(sem_create==SEM_FAILED){
@@ -93,6 +94,12 @@ int main(int argc, char *argv[]){
             exit(EXIT_FAILURE);
     }
     
+    sem_t *sem_stats= sem_open(SEM_STATS_FNAME,  O_CREAT | O_EXCL,0660,0);
+        if(sem_pop==SEM_FAILED){
+            printf("SEM STATS");
+            //perror("sem_open/pop");
+            exit(EXIT_FAILURE);
+    }
 
     //sem_wait(&info_block->semaphores.empty);
     //sem_post(&info_block->semaphores.empty)
@@ -115,6 +122,7 @@ int main(int argc, char *argv[]){
     sem_close(sem_create);
     sem_close(sem_push);
     sem_close(sem_pop);
+    sem_close(sem_stats);
     detachMemoryInfoBlock(info_block);
     /*
      if(destroyMemoryInfoBlock(buffer_name)){

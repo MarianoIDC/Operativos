@@ -56,6 +56,11 @@ void rebuildFile(){
             //perror("sem_open/pop");
             exit(EXIT_FAILURE);
     }
+    sem_t *sem_stats= sem_open(SEM_STATS_FNAME,0);
+        if(sem_stats==SEM_FAILED){
+            //perror("sem_open/pop");
+            exit(EXIT_FAILURE);
+        }
     semaphtest sem_using = {
         .semCreate = sem_create,
         .semPush = sem_push,
@@ -94,17 +99,17 @@ void rebuildFile(){
         sem_post(sem_push);
         sem_post(sem_create);
     }
+    sem_post(sem_stats);
     clock_t end_time = clock(); 
     //stats_block.block_client += (double)(end_time-start_time);
     stats_block.total_time += (double)(end_time-begin_time);
     info_block->stat.block_recons=stats_block.block_recons;
     info_block->stat.total_time+=stats_block.total_time;
-    print_stats(info_block->stat);
-    
-    
+    //print_stats(info_block->stat);
     sem_close(sem_create);
     sem_close(sem_push);
     sem_close(sem_pop);
+    sem_close(sem_stats);
 
     
 
