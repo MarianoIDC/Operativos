@@ -24,7 +24,8 @@ run:
 	./run
 
 clean:
-	rm run
+	rm reconstructor
 	rm creator
 	rm stats
 	rm client
+	rm mem.txt
