@@ -55,7 +55,6 @@ int main(int argc, char *argv[]){
     initGlobal *data_ptr = &dataI;
     initGlobal *info_block = attachMemoryInfoBlock(buffer_name, INFO_SIZE);
     info_block->stop=false;
-    info_block->total_stop=false;
 
     if (info_block == NULL)
     {

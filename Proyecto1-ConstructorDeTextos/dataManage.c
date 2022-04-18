@@ -118,7 +118,7 @@ data *printMemory(cirBuffer *circ, char *buffer_name, int i){
         //sem_post(&sems.full);
     }
     printf("Memory index: %i\n", dataI->index);
-    printf("Message Emited Date: %s", ctime(&dataI->current_time));
+    printf("Date when char added: %s", ctime(&dataI->current_time));
     printf("Message: %c\n", dataI->data);
     //printf("Waited: %lf seconds\n", t);
     printf("--------------------------------------\n");

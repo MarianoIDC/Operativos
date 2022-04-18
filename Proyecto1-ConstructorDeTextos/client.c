@@ -74,19 +74,53 @@ void readFile(char *filename){
 
     //FILE PARAMETERS
     FILE* filePtr;
+	FILE* ptr_s;
+	FILE* ptr_c;
 	char ch;
     time_t t;
     struct tm *tm;
     char fechayhora[100];
 	// Opening file in reading mode
 	filePtr = fopen(filename, "r");
+    ptr_s = fopen(filename, "r");
+	ptr_c = fopen(filename, "r");
 
 	if (NULL == filePtr) {
 		printf("file can't be opened \n");
 	}
 
-	printf("Press Enter to read the file... \n");
+    char ch_size;
+    ch_size = fgetc(ptr_s);
+    int size_temp = 0;
 
+    //largo del archivo
+    while (ch_size != EOF)
+    {
+        ch_size = fgetc(ptr_s);
+        size_temp++;
+    }
+
+
+    //Creacion del char
+    char ch_aux;
+    char file[size_temp+1];
+    ch_aux = fgetc(ptr_c);
+    int n = 0;
+
+    for (int i = 0; i <= size_temp; i++)
+    {
+        if (ch_aux == EOF)
+        {
+            break;
+        }
+        else{
+            file[i] = ch_aux;
+            ch_aux = fgetc(ptr_c);
+        }
+    }
+
+	printf("Press Enter to read the file... \n");
+    int j =0;
 	// Printing what is written in file
 	// character by character using loop.
 	do {
@@ -95,6 +129,12 @@ void readFile(char *filename){
         {
             if(!info_block->stop){
                 ch = fgetc(filePtr);
+                if(j <= size_temp)
+                {
+                    printf("--------FILE--------\n");
+                    printf("%s\n", &file[j]);
+                }
+                j++;
                 t=time(NULL);
                 tm=localtime(&t);
                 strftime(fechayhora, 100, "%d/%m/%Y-%H:%M:%S", tm);
@@ -103,7 +143,7 @@ void readFile(char *filename){
                 data dataI = {
                     .key = 0,
                     .index = 0,
-                    .current_time = t,
+                    .current_time = tm,
                     .data = ch
                 };
                 clock_t wait_time_start = clock(); 

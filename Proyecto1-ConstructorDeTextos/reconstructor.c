@@ -9,7 +9,7 @@
 #include <time.h>
 #include <unistd.h>
 #define INFO_SIZE sizeof(initGlobal)
-#define SIZE 20
+#define SIZE 200
 
 const char * filename= "reconstructor.txt";
 int concatChar(const char * filename, char value);
@@ -87,9 +87,10 @@ void rebuildFile(){
         
         data *dataptr= pop_data(&info_block->buff, buffer_name, &sem_using);
         if(dataptr->data==NULL){
-            printf("HERE!!!!!!");
+            //printf("HERE!!!!!!");
             break;
         }
+        printPop(dataptr);
         //fputc(memory[i],fp);
         fclose(fp);
         concatChar(filename,dataptr->data);

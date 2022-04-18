@@ -53,13 +53,13 @@ typedef struct{
     int size;
     cirBuffer buff;
     bool stop;
-    bool total_stop;
     stats stat;
     
 }initGlobal;
 
 void printData(data * data, char * instance_name, int instance_id, double t);
 void print_stats(stats stat);
+void printPop(data * data);
 
 
 
