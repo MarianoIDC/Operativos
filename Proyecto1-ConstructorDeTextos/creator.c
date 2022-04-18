@@ -116,11 +116,12 @@ int main(int argc, char *argv[]){
     sem_close(sem_push);
     sem_close(sem_pop);
     detachMemoryInfoBlock(info_block);
+    /*
      if(destroyMemoryInfoBlock(buffer_name)){
         printf("\nDetach Memory\n");
     }else{
         printf("\nERROR: Detach Memory\n");
-    }
+    }*/
     
     printf("END");
     return 0;

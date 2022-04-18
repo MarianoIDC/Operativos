@@ -36,15 +36,6 @@ typedef struct{
     char data;
 }data;
 
-//global data, should be share with all process
-typedef struct{
-    char data[SIZE];
-    semaph semaphores;
-    int size;
-    cirBuffer buff;
-    bool stop;
-    
-}initGlobal;
 
 //stats info
 typedef struct{
@@ -55,9 +46,19 @@ typedef struct{
     double total_time;
 }stats;
 
-void printData(data * data, char * instance_name, int instance_id, double t);
-void printStats(stats stats, char * instance_name, int instance_id);
+//global data, should be share with all process
+typedef struct{
+    char data[SIZE];
+    semaph semaphores;
+    int size;
+    cirBuffer buff;
+    bool stop;
+    stats stat;
+    
+}initGlobal;
 
+void printData(data * data, char * instance_name, int instance_id, double t);
+void print_stats(stats stat);
 
 
 

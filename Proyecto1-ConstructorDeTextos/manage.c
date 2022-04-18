@@ -15,6 +15,8 @@
 
 // needs the file name and the block size
 // return the id of the shared memory block
+
+
 static int getSharedBlock(char *filename, int size){
     key_t key;
 

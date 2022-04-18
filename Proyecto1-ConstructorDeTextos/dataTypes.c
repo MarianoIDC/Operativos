@@ -13,3 +13,19 @@ void printData(data * dataI, char * instance_name, int instance_id, double t)
     printf("--------------------------------------\n");
     printf("\n");
 }
+
+
+void print_stats(stats stat)
+{
+    printf("\n");
+    printf("\033[0;32m");
+    printf("--------------------------------------\n");
+    printf("Stats\n");
+    printf("Data Transfered: %i\n",stat.transfer-1);
+    printf("Client Wait Time: %lf\n", stat.block_client);
+    printf("Reconstructor wait time: %lf\n", stat.block_recons);
+    printf("Total time: %lf\n", stat.total_time);
+    printf("--------------------------------------\n");
+    printf("\033[0m");
+    printf("\n");
+}

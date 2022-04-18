@@ -14,12 +14,21 @@
 const char * filename= "reconstructor.txt";
 int concatChar(const char * filename, char value);
 
+stats stats_block = {
+    .block_client = 0,
+    .block_recons = 0,
+    .transfer = 0,
+    .total_memory = 0,
+    .total_time = 0
+};
+
 int main(int argc, char *argv[]){
     rebuildFile();
     return 0;
 }
 
 void rebuildFile(){
+    clock_t begin_time = clock();
     int i;
     char *buffer_name= "mem.txt";
     remove(filename);
@@ -56,7 +65,11 @@ void rebuildFile(){
 	// Print the elements of the array
     
     for (i = 0; i < SIZE; ++i) {
+        clock_t wait_time_start = clock(); 
         sem_wait(sem_pop);
+        clock_t wait_time_end = clock();
+        double wait_time=(double) (wait_time_end-wait_time_start);
+        stats_block.block_recons=wait_time;
         printf("\n Press ENTER key to Continue\n"); 
         getchar();
         //printf("Memory address: 0x%08x with value %c\n", &memory+i,memory[i]);
@@ -68,6 +81,10 @@ void rebuildFile(){
         }
         
         data *dataptr= pop_data(&info_block->buff, buffer_name, &sem_using);
+        if(dataptr->data==NULL){
+            printf("HERE!!!!!!");
+            break;
+        }
         //fputc(memory[i],fp);
         fclose(fp);
         concatChar(filename,dataptr->data);
@@ -76,9 +93,20 @@ void rebuildFile(){
         //printf("\nIndex VALUE: %c, \n", dataptr->index);
         sem_post(sem_push);
         sem_post(sem_create);
-    }sem_close(sem_create);
+    }
+    clock_t end_time = clock(); 
+    //stats_block.block_client += (double)(end_time-start_time);
+    stats_block.total_time += (double)(end_time-begin_time);
+    info_block->stat.block_recons=stats_block.block_recons;
+    info_block->stat.total_time+=stats_block.total_time;
+    print_stats(info_block->stat);
+    
+    
+    sem_close(sem_create);
     sem_close(sem_push);
     sem_close(sem_pop);
+
+    
 
     detachMemoryInfoBlock(info_block);
 
