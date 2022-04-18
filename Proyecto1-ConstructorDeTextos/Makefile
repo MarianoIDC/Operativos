@@ -14,8 +14,8 @@ creator:
 	./creator
 
 reconstructor: 
-	gcc -std=c17 -Wall -lpthread -lrt manage.c dataTypes.c dataManage.c reconstructor.c -o rec
-	./rec
+	gcc -std=c17 -Wall -lpthread -lrt manage.c dataTypes.c dataManage.c reconstructor.c -o reconstructor
+	./reconstructor
 
 stats: 
 	gcc -std=c17 -Wall -lpthread -lrt manage.c dataTypes.c dataManage.c stats.c -o stats
@@ -26,3 +26,5 @@ run:
 clean:
 	rm run
 	rm creator
+	rm stats
+	rm client
